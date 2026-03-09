@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Design Activity 1: Micro-interactions — Pull to Refresh</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -14,15 +14,16 @@
     background: #f5f5f7;
     color: #1d1d1f;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
   .page {
-    max-width: 900px;
+    max-width: 920px;
     margin: 0 auto;
     padding: 40px 24px 80px;
   }
 
-  /* Header */
+  /* ── Header ── */
   .header {
     text-align: center;
     margin-bottom: 48px;
@@ -51,7 +52,7 @@
     font-weight: 400;
   }
 
-  /* Framework bar */
+  /* ── Framework bar ── */
   .framework-bar {
     display: flex;
     align-items: center;
@@ -62,6 +63,7 @@
     padding: 20px 32px;
     margin-bottom: 40px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    flex-wrap: wrap;
   }
   .fw-item {
     display: flex;
@@ -81,25 +83,19 @@
     font-weight: 700;
   }
   .fw-icon.trigger { background: #34c759; }
-  .fw-icon.rules { background: #ff9f0a; }
+  .fw-icon.rules   { background: #ff9f0a; }
   .fw-icon.feedback { background: #ff3b30; }
-  .fw-icon.loops { background: #007aff; }
+  .fw-icon.loops   { background: #007aff; }
   .fw-label { font-size: 12px; font-weight: 600; color: #6e6e73; text-transform: uppercase; letter-spacing: 0.3px; }
-  .fw-plus { font-size: 22px; color: #c7c7cc; font-weight: 300; }
-  .fw-equals { font-size: 22px; color: #c7c7cc; font-weight: 300; }
-  .fw-result {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
+  .fw-plus, .fw-equals { font-size: 22px; color: #c7c7cc; font-weight: 300; }
+  .fw-result { display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .fw-result .fw-icon { background: linear-gradient(135deg, #6e3eba, #af52de); }
 
-  /* Interaction showcase */
+  /* ── Demo Showcase ── */
   .showcase {
     background: #fff;
     border-radius: 20px;
-    padding: 40px;
+    padding: 40px 40px 48px;
     margin-bottom: 32px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
@@ -107,54 +103,406 @@
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 6px;
+    text-align: center;
   }
   .showcase .desc {
     font-size: 15px;
     color: #6e6e73;
-    margin-bottom: 32px;
-  }
-
-  .phone-row {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-
-  .phone-frame {
-    position: relative;
-    width: 200px;
-    flex-shrink: 0;
-  }
-  .phone-frame .step-label {
+    margin-bottom: 12px;
     text-align: center;
-    font-size: 12px;
-    font-weight: 600;
-    color: #6e6e73;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
   }
-  .phone-frame .step-num {
+  .showcase .try-hint {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .showcase .try-hint span {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #6e3eba;
+    gap: 8px;
+    background: linear-gradient(135deg, #6e3eba, #af52de);
     color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    margin-right: 4px;
-    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 28px;
+    animation: hint-pulse 2.5s ease-in-out infinite;
   }
-  .phone-svg {
-    width: 100%;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  @keyframes hint-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 2px 12px rgba(110,62,186,0.25); }
+    50%      { transform: scale(1.04); box-shadow: 0 4px 20px rgba(110,62,186,0.4); }
+  }
+  .try-hint .arrow-down {
+    display: inline-block;
+    animation: bounce-arrow 1.5s ease-in-out infinite;
+  }
+  @keyframes bounce-arrow {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(4px); }
   }
 
-  /* Elements grid */
+  /* ── Phone Frame ── */
+  .phone-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .iphone-frame {
+    position: relative;
+    width: 320px;
+    height: 640px;
+    background: #1a1a1a;
+    border-radius: 44px;
+    padding: 14px;
+    box-shadow:
+      0 0 0 2px #333,
+      0 0 0 4px #1a1a1a,
+      0 20px 60px rgba(0,0,0,0.35),
+      0 8px 20px rgba(0,0,0,0.2);
+  }
+  /* Notch */
+  .iphone-notch {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 0 0 18px 18px;
+    z-index: 20;
+  }
+  .iphone-notch::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2a2a2e;
+  }
+  /* Status bar */
+  .status-bar {
+    position: absolute;
+    top: 16px;
+    left: 28px;
+    right: 28px;
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 15;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .status-bar .time { margin-left: 4px; }
+  .status-bar .icons {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-right: 4px;
+  }
+  .status-bar .icons svg { width: 14px; height: 14px; }
+  /* Screen */
+  .iphone-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 32px;
+    overflow: hidden;
+  }
+
+  /* ── App Header inside phone ── */
+  .app-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 88px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 16px 10px;
+    border-bottom: 0.5px solid #e5e5ea;
+  }
+  .app-header-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .app-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .app-logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.5px;
+  }
+  .app-header-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .app-header-icon svg { width: 22px; height: 22px; color: #1d1d1f; }
+
+  /* ── Pull-to-Refresh Indicator ── */
+  .ptr-indicator {
+    position: absolute;
+    top: 88px;
+    left: 0;
+    right: 0;
+    height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 5;
+    background: #fff;
+    transition: none;
+  }
+  .ptr-indicator.snapping {
+    transition: height 0.3s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .ptr-indicator.refreshing {
+    transition: height 0.3s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .ptr-spinner {
+    width: 28px;
+    height: 28px;
+    position: relative;
+  }
+  .ptr-spinner svg {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.1s linear;
+  }
+  .ptr-spinner.spinning svg {
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .ptr-spinner .check-mark {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 28px;
+    height: 28px;
+  }
+  .ptr-spinner.done svg.arc { display: none; }
+  .ptr-spinner.done .check-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: check-pop 0.35s cubic-bezier(0.2, 0, 0, 1.2);
+  }
+  @keyframes check-pop {
+    0%   { transform: scale(0); opacity: 0; }
+    60%  { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── Feed ── */
+  .feed-container {
+    position: absolute;
+    top: 88px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    transition: none;
+  }
+  .feed-container.snapping {
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .feed-container.refreshing {
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .feed-list {
+    padding: 4px 0 20px;
+  }
+
+  /* Threshold bounce */
+  .feed-container.threshold-hit {
+    animation: threshold-bounce 0.15s ease-out;
+  }
+  @keyframes threshold-bounce {
+    0%   { filter: none; }
+    50%  { filter: brightness(0.98); }
+    100% { filter: none; }
+  }
+
+  /* ── Tweet / Post Card ── */
+  .tweet {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 0.5px solid #eff3f4;
+    cursor: default;
+    position: relative;
+  }
+  .tweet.new-post {
+    animation: slide-in-post 0.45s cubic-bezier(0.2, 0, 0, 1) forwards;
+    background: #f0f7ff;
+  }
+  .tweet.new-post.settled {
+    background: transparent;
+    transition: background 1s ease;
+  }
+  @keyframes slide-in-post {
+    0%   { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .tweet-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .tweet-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .tweet-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+    flex-wrap: wrap;
+  }
+  .tweet-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f1419;
+    white-space: nowrap;
+  }
+  .tweet-verified {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+  .tweet-handle {
+    font-size: 12px;
+    color: #536471;
+    white-space: nowrap;
+  }
+  .tweet-dot {
+    font-size: 12px;
+    color: #536471;
+  }
+  .tweet-time {
+    font-size: 12px;
+    color: #536471;
+    white-space: nowrap;
+  }
+  .tweet-text {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #0f1419;
+    margin-bottom: 8px;
+    word-wrap: break-word;
+  }
+  .tweet-actions {
+    display: flex;
+    gap: 0;
+    justify-content: space-between;
+    max-width: 200px;
+  }
+  .tweet-action {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #536471;
+  }
+  .tweet-action svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* New badge */
+  .new-badge {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #1d9bf0;
+    background: #e8f5fd;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: fade-badge 3s ease forwards;
+  }
+  @keyframes fade-badge {
+    0%, 70% { opacity: 1; }
+    100%    { opacity: 0; }
+  }
+
+  /* ── Bottom nav ── */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 0.5px solid #e5e5ea;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
+    z-index: 10;
+  }
+  .bottom-nav svg { width: 22px; height: 22px; color: #536471; }
+  .bottom-nav .active svg { color: #1d1d1f; }
+
+  /* ── Home indicator ── */
+  .home-indicator {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    z-index: 25;
+  }
+
+  /* ── Elements grid ── */
   .elements-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -171,13 +519,13 @@
     padding: 28px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     border-left: 4px solid;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
   .element-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
   .element-card.trigger { border-color: #34c759; }
-  .element-card.rules { border-color: #ff9f0a; }
+  .element-card.rules   { border-color: #ff9f0a; }
   .element-card.feedback { border-color: #ff3b30; }
-  .element-card.loops { border-color: #007aff; }
+  .element-card.loops   { border-color: #007aff; }
 
   .element-card .card-header {
     display: flex;
@@ -196,10 +544,10 @@
     font-weight: 700;
     color: #fff;
   }
-  .element-card.trigger .card-num { background: #34c759; }
-  .element-card.rules .card-num { background: #ff9f0a; }
+  .element-card.trigger .card-num  { background: #34c759; }
+  .element-card.rules .card-num    { background: #ff9f0a; }
   .element-card.feedback .card-num { background: #ff3b30; }
-  .element-card.loops .card-num { background: #007aff; }
+  .element-card.loops .card-num    { background: #007aff; }
 
   .element-card .card-title {
     font-size: 18px;
@@ -213,8 +561,18 @@
   .element-card .card-body strong {
     color: #1d1d1f;
   }
+  .element-card .try-ref {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6e3eba;
+    background: #f3eefa;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
 
-  /* Summary */
+  /* ── Summary ── */
   .summary-card {
     background: linear-gradient(135deg, #6e3eba 0%, #af52de 100%);
     color: #fff;
@@ -240,13 +598,26 @@
     color: #aeaeb2;
   }
 
-  /* Arrow between phones */
-  .arrow-sep {
-    display: flex;
-    align-items: center;
-    padding-top: 30px;
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    .page { padding: 20px 12px 60px; }
+    .header h1 { font-size: 26px; }
+    .header .subtitle { font-size: 15px; }
+    .showcase { padding: 24px 16px 32px; }
+    .iphone-frame {
+      width: 280px;
+      height: 560px;
+      border-radius: 38px;
+      padding: 12px;
+    }
+    .iphone-screen { border-radius: 28px; }
+    .iphone-notch { width: 120px; height: 24px; border-radius: 0 0 14px 14px; }
+    .framework-bar { padding: 16px 16px; gap: 8px; }
+    .summary-card { padding: 28px 24px; }
   }
-  .arrow-sep svg { width: 32px; height: 32px; color: #c7c7cc; }
+
+  /* No text selection inside phone */
+  .iphone-frame { user-select: none; -webkit-user-select: none; }
 </style>
 </head>
 <body>
@@ -272,129 +643,87 @@
     <div class="fw-result"><div class="fw-icon">&#10024;</div><div class="fw-label">Micro-interaction</div></div>
   </div>
 
-  <!-- Chosen Interaction -->
+  <!-- Interactive Demo Showcase -->
   <div class="showcase">
     <h2>Chosen Microinteraction: Pull to Refresh</h2>
-    <p class="desc">Found on nearly every mobile app with a scrollable feed (e.g., Twitter/X, Instagram, Mail, Safari). The user drags the content downward to trigger a content reload.</p>
+    <p class="desc">Found on nearly every mobile app with a scrollable feed (e.g., Twitter/X, Instagram, Mail). The user drags the content downward to trigger a content reload.</p>
 
-    <div class="phone-row">
+    <div class="try-hint">
+      <span>
+        <span class="arrow-down">&#8595;</span>
+        Try it! Click and drag down inside the phone to refresh
+        <span class="arrow-down">&#8595;</span>
+      </span>
+    </div>
 
-      <!-- Step 1: Idle -->
-      <div class="phone-frame">
-        <div class="step-label"><span class="step-num">1</span> Idle State</div>
-        <svg class="phone-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="192" height="372" rx="28" fill="#f9f9f9" stroke="#d1d1d6" stroke-width="2"/>
-          <rect x="70" y="14" width="60" height="6" rx="3" fill="#d1d1d6"/>
-          <rect x="16" y="40" width="168" height="320" rx="4" fill="#fff"/>
-          <!-- Feed items -->
-          <rect x="24" y="52" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="60" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="62" width="80" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="76" width="100" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="114" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="122" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="124" width="90" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="138" width="70" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="176" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="184" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="186" width="72" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="200" width="95" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="238" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="246" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="248" width="85" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="262" width="60" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="300" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="308" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="310" width="78" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="324" width="88" height="6" rx="3" fill="#e5e5ea"/>
-        </svg>
+    <div class="phone-wrapper">
+      <div class="iphone-frame">
+        <!-- Notch -->
+        <div class="iphone-notch"></div>
+        <!-- Home indicator -->
+        <div class="home-indicator"></div>
+
+        <div class="iphone-screen" id="iphoneScreen">
+          <!-- Status bar -->
+          <div class="status-bar">
+            <span class="time">9:41</span>
+            <span class="icons">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-3zm3.5-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-5zm3.5-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3.5-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-9z"/></svg>
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8.5A.5.5 0 0 1 .5 8H6a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/><path d="M15 3a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3zm-1 3H2V3h12v3z"/><rect x="13" y="3" width="1.5" height="4" rx=".5" fill="currentColor"/></svg>
+            </span>
+          </div>
+
+          <!-- App header -->
+          <div class="app-header">
+            <div class="app-header-content">
+              <div class="app-avatar">U</div>
+              <div class="app-logo">feedr</div>
+              <div class="app-header-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pull-to-refresh indicator -->
+          <div class="ptr-indicator" id="ptrIndicator">
+            <div class="ptr-spinner" id="ptrSpinner">
+              <svg class="arc" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="10" stroke="#e5e5ea" stroke-width="2.5"/>
+                <path id="ptrArc" d="" stroke="#6e3eba" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+              <div class="check-mark">
+                <svg viewBox="0 0 28 28" fill="none">
+                  <circle cx="14" cy="14" r="10" fill="#34c759"/>
+                  <path d="M9 14.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feed -->
+          <div class="feed-container" id="feedContainer">
+            <div class="feed-list" id="feedList">
+              <!-- Posts injected by JS -->
+            </div>
+          </div>
+
+          <!-- Bottom nav -->
+          <div class="bottom-nav">
+            <div class="active">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+            </div>
+            <div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            </div>
+            <div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="arrow-sep">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M8 16h16m0 0l-6-6m6 6l-6 6" stroke="#c7c7cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-
-      <!-- Step 2: Pulling -->
-      <div class="phone-frame">
-        <div class="step-label"><span class="step-num">2</span> Pulling Down</div>
-        <svg class="phone-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="192" height="372" rx="28" fill="#f9f9f9" stroke="#d1d1d6" stroke-width="2"/>
-          <rect x="70" y="14" width="60" height="6" rx="3" fill="#d1d1d6"/>
-          <rect x="16" y="40" width="168" height="320" rx="4" fill="#fff"/>
-          <!-- Spinner area -->
-          <g transform="translate(100,72)">
-            <circle cx="0" cy="0" r="14" fill="none" stroke="#e5e5ea" stroke-width="2.5"/>
-            <path d="M0-14 A14 14 0 0 1 14 0" fill="none" stroke="#6e3eba" stroke-width="2.5" stroke-linecap="round"/>
-          </g>
-          <!-- Finger indicator -->
-          <g transform="translate(100,105)">
-            <path d="M0-8 L0 8" stroke="#6e3eba" stroke-width="1.5" stroke-dasharray="3,2"/>
-            <path d="M-4 4 L0 10 L4 4" fill="#6e3eba" opacity="0.6"/>
-          </g>
-          <!-- Feed items pushed down -->
-          <rect x="24" y="118" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="126" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="128" width="80" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="142" width="100" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="180" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="188" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="190" width="90" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="204" width="70" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="242" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="250" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="252" width="72" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="266" width="95" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="304" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="312" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="314" width="85" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="328" width="60" height="6" rx="3" fill="#e5e5ea"/>
-          <!-- Drag hand -->
-          <text x="100" y="54" text-anchor="middle" font-size="9" fill="#6e3eba" font-weight="600" font-family="Inter, sans-serif">&#8595; PULLING</text>
-        </svg>
-      </div>
-
-      <div class="arrow-sep">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M8 16h16m0 0l-6-6m6 6l-6 6" stroke="#c7c7cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-
-      <!-- Step 3: Loading / Refreshed -->
-      <div class="phone-frame">
-        <div class="step-label"><span class="step-num">3</span> Refreshed</div>
-        <svg class="phone-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="192" height="372" rx="28" fill="#f9f9f9" stroke="#d1d1d6" stroke-width="2"/>
-          <rect x="70" y="14" width="60" height="6" rx="3" fill="#d1d1d6"/>
-          <rect x="16" y="40" width="168" height="320" rx="4" fill="#fff"/>
-          <!-- NEW item highlighted -->
-          <rect x="24" y="52" width="152" height="52" rx="8" fill="#eef6ff" stroke="#007aff" stroke-width="1"/>
-          <rect x="32" y="60" width="28" height="28" rx="14" fill="#007aff" opacity="0.2"/>
-          <circle cx="46" cy="74" r="3" fill="#007aff"/>
-          <rect x="68" y="62" width="80" height="8" rx="4" fill="#007aff" opacity="0.5"/>
-          <rect x="68" y="76" width="100" height="6" rx="3" fill="#b3d7ff"/>
-          <text x="158" y="59" font-size="7" fill="#007aff" font-weight="700" font-family="Inter, sans-serif">NEW</text>
-          <!-- Existing items -->
-          <rect x="24" y="114" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="122" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="124" width="80" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="138" width="100" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="176" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="184" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="186" width="90" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="200" width="70" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="238" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="246" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="248" width="72" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="262" width="95" height="6" rx="3" fill="#e5e5ea"/>
-          <rect x="24" y="300" width="152" height="52" rx="8" fill="#f2f2f7"/>
-          <rect x="32" y="308" width="28" height="28" rx="14" fill="#d1d1d6"/>
-          <rect x="68" y="310" width="85" height="8" rx="4" fill="#c7c7cc"/>
-          <rect x="68" y="324" width="60" height="6" rx="3" fill="#e5e5ea"/>
-          <!-- Checkmark -->
-          <g transform="translate(100, 49)">
-            <text text-anchor="middle" font-size="8" fill="#34c759" font-weight="600" font-family="Inter, sans-serif">&#10003; Updated</text>
-          </g>
-        </svg>
-      </div>
-
     </div>
   </div>
 
@@ -407,8 +736,9 @@
         <div class="card-title">Trigger</div>
       </div>
       <div class="card-body">
-        <strong>User-initiated trigger:</strong> The user places their finger on the content list and drags it downward past a threshold distance (typically ~60–80 px). This is a manual, gesture-based trigger — there is no button involved.<br><br>
+        <strong>User-initiated trigger:</strong> The user places their finger (or cursor) on the content list and drags it downward past a threshold distance (~60 px). This is a manual, gesture-based trigger with no button involved. Try it in the demo above -- notice how nothing happens until you pull far enough.<br><br>
         <strong>System trigger:</strong> Some apps also auto-refresh when the view appears (e.g., switching tabs), but the canonical pull-to-refresh is a direct-manipulation gesture that puts the user in control.
+        <div class="try-ref">Try it above -- drag down inside the feed!</div>
       </div>
     </div>
 
@@ -423,6 +753,7 @@
         &bull; Once the threshold is crossed, the app sends a network request for the latest content.<br>
         &bull; The spinner stays visible until the response is received or a timeout occurs.<br>
         &bull; On success, new items are inserted at the top of the list. On failure, an error banner appears.
+        <div class="try-ref">Try it above -- pull only halfway and release to see the cancel!</div>
       </div>
     </div>
 
@@ -432,9 +763,10 @@
         <div class="card-title">Feedback</div>
       </div>
       <div class="card-body">
-        <strong>Visual:</strong> A circular spinner/progress indicator appears in the gap created by the pull. It rotates while loading, then either morphs into a checkmark or disappears when content loads.<br><br>
-        <strong>Haptic:</strong> On iOS, a subtle haptic tap fires the moment the pull crosses the activation threshold, confirming the gesture registered.<br><br>
-        <strong>Content shift:</strong> New items animate in from the top, pushing existing content down smoothly.
+        <strong>Visual:</strong> A circular spinner appears proportionally as you pull. It rotates while loading, then morphs into a green checkmark when content arrives. Watch the spinner in the demo above!<br><br>
+        <strong>Haptic:</strong> On iOS, a subtle haptic tap fires the moment the pull crosses the activation threshold. In the demo, a visual "bounce" simulates this.<br><br>
+        <strong>Content shift:</strong> New items animate in from the top with a blue highlight, pushing existing content down smoothly.
+        <div class="try-ref">Try it above -- watch the spinner transform into a checkmark!</div>
       </div>
     </div>
 
@@ -444,8 +776,9 @@
         <div class="card-title">Loops &amp; Modes</div>
       </div>
       <div class="card-body">
-        <strong>Loop:</strong> The interaction is infinitely repeatable — the user can pull to refresh as many times as they wish. There is no "cooldown," though rapid successive pulls typically return the same content if nothing has changed on the server.<br><br>
-        <strong>Mode change:</strong> If the device is offline, the interaction switches modes: the spinner may stop early and an "No connection" banner replaces new content. The same gesture now leads to a different feedback path.
+        <strong>Loop:</strong> The interaction is infinitely repeatable -- pull to refresh as many times as you wish. There is no cooldown, though rapid successive pulls typically return the same content if nothing has changed. Try refreshing the demo multiple times!<br><br>
+        <strong>Mode change:</strong> If the device is offline, the interaction switches modes: the spinner may stop early and a "No connection" banner replaces new content. The same gesture now leads to a different feedback path.
+        <div class="try-ref">Try it above -- refresh multiple times to see new posts appear!</div>
       </div>
     </div>
 
@@ -455,7 +788,7 @@
   <div class="summary-card">
     <h3>Why Pull-to-Refresh Is a Great Microinteraction</h3>
     <p>
-      Pull-to-refresh, originally designed by Loren Brichter for Tweetie (2008), is one of the most successful microinteractions in mobile design history. It works because the trigger is intuitive (the gesture mirrors physically pulling a list), the feedback is immediate and multi-sensory (visual spinner + haptic tap), the rules are simple and forgiving (partial pulls cancel gracefully), and the loop is natural — users can repeat the action whenever they want with zero friction. It gives users a sense of direct control over content freshness, turning a mundane data-fetch into a satisfying moment of interaction.
+      Pull-to-refresh, originally designed by Loren Brichter for Tweetie (2008), is one of the most successful microinteractions in mobile design history. It works because the trigger is intuitive (the gesture mirrors physically pulling a list), the feedback is immediate and multi-sensory (visual spinner + haptic tap), the rules are simple and forgiving (partial pulls cancel gracefully), and the loop is natural -- users can repeat the action whenever they want with zero friction. It gives users a sense of direct control over content freshness, turning a mundane data-fetch into a satisfying moment of interaction.
     </p>
   </div>
 
@@ -464,5 +797,354 @@
   </div>
 
 </div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── Post Data ──
+  const avatarColors = [
+    'linear-gradient(135deg, #667eea, #764ba2)',
+    'linear-gradient(135deg, #f093fb, #f5576c)',
+    'linear-gradient(135deg, #4facfe, #00f2fe)',
+    'linear-gradient(135deg, #43e97b, #38f9d7)',
+    'linear-gradient(135deg, #fa709a, #fee140)',
+    'linear-gradient(135deg, #a18cd1, #fbc2eb)',
+    'linear-gradient(135deg, #fccb90, #d57eeb)',
+    'linear-gradient(135deg, #ff9a9e, #fecfef)',
+    'linear-gradient(135deg, #96fbc4, #f9f586)',
+    'linear-gradient(135deg, #667eea, #f093fb)',
+  ];
+
+  const initialPosts = [
+    { name: 'Sarah Chen', handle: '@sarahdesigns', verified: true, text: 'Just shipped a new feature! The pull-to-refresh animation took 3 days to get right but it was so worth it. Details matter.', time: '2m', replies: 12, retweets: 45, likes: 234, avatar: 'S', color: 0 },
+    { name: 'Alex Rivera', handle: '@alexr_dev', verified: false, text: 'Hot take: microinteractions are the difference between a good app and a great app. Nobody notices when they work perfectly, everyone notices when they don\'t.', time: '8m', replies: 31, retweets: 89, likes: 412, avatar: 'A', color: 1 },
+    { name: 'Design Daily', handle: '@designdaily', verified: true, text: 'The 4 elements of every microinteraction:\n\n1. Trigger\n2. Rules\n3. Feedback\n4. Loops & Modes\n\nMaster these and you master UX.', time: '15m', replies: 7, retweets: 156, likes: 823, avatar: 'D', color: 2 },
+    { name: 'Maya Patel', handle: '@mayabuilds', verified: false, text: 'Spent the afternoon studying how Instagram handles pull-to-refresh. The rubber-band physics are so satisfying. Spring animations for the win.', time: '24m', replies: 5, retweets: 23, likes: 167, avatar: 'M', color: 3 },
+    { name: 'Tom Wright', handle: '@tomwrites', verified: true, text: 'Fun fact: Loren Brichter invented pull-to-refresh for Tweetie in 2008. Twitter acquired it, and now it\'s everywhere. One interaction that changed mobile design forever.', time: '38m', replies: 19, retweets: 78, likes: 534, avatar: 'T', color: 4 },
+    { name: 'UX Collective', handle: '@uxcollective', verified: true, text: 'New article: "Why the best microinteractions feel invisible." We break down 10 examples from apps you use every day. Link in bio.', time: '1h', replies: 8, retweets: 112, likes: 645, avatar: 'U', color: 5 },
+    { name: 'Jordan Kim', handle: '@jordankim', verified: false, text: 'Just realized that haptic feedback is the unsung hero of pull-to-refresh. That tiny tap when you cross the threshold changes everything.', time: '1h', replies: 3, retweets: 34, likes: 189, avatar: 'J', color: 6 },
+    { name: 'Priya Sharma', handle: '@priyaux', verified: false, text: 'Design principle: If the user has to think about how to use a microinteraction, you\'ve already failed. Make it feel like second nature.', time: '2h', replies: 14, retweets: 67, likes: 398, avatar: 'P', color: 7 },
+  ];
+
+  const newPostPool = [
+    { name: 'Kai Nakamura', handle: '@kaidesign', verified: true, text: 'Just published my case study on animation timing in mobile apps. TL;DR: 200-300ms is the sweet spot. Anything longer feels sluggish.', avatar: 'K', color: 8 },
+    { name: 'Lena Foster', handle: '@lenafoster', verified: false, text: 'Prototype tip: always test your pull-to-refresh with real content, not lorem ipsum. The visual weight of actual text changes everything about the feel.', avatar: 'L', color: 9 },
+    { name: 'Marcus Chen', handle: '@marcusc', verified: false, text: 'I\'ve been A/B testing spinner styles for our refresh indicator. Turns out the simple arc spinner outperforms fancy animations by 23% in perceived speed.', avatar: 'M', color: 0 },
+    { name: 'Nina Park', handle: '@ninapark_ux', verified: true, text: 'Accessibility reminder: pull-to-refresh must have alternatives for users who can\'t perform swipe gestures. Always include a refresh button somewhere.', avatar: 'N', color: 1 },
+    { name: 'Eli Brooks', handle: '@elibrooks', verified: false, text: 'The best part of spring animations? They never look the same twice. That tiny bit of organic randomness makes interfaces feel alive.', avatar: 'E', color: 2 },
+    { name: 'Zara Ahmed', handle: '@zaraux', verified: true, text: 'Studied 50 apps today. The ones with the best pull-to-refresh all share one thing: they give you feedback from the first pixel of movement.', avatar: 'Z', color: 3 },
+    { name: 'Oscar Ruiz', handle: '@oscarruiz_', verified: false, text: 'Design shower thought: we\'ve collectively trained billions of people to pull down on their screens to get new content. That\'s wild.', avatar: 'O', color: 4 },
+    { name: 'Aria Lin', handle: '@arialin', verified: false, text: 'Just discovered that the original pull-to-refresh patent expired in 2019. Now it truly belongs to everyone. Thank you, Loren Brichter.', avatar: 'A', color: 5 },
+    { name: 'Dev Weekly', handle: '@devweekly', verified: true, text: 'Poll: What\'s the most satisfying microinteraction? Like for pull-to-refresh, RT for double-tap-to-like, Reply with your pick!', avatar: 'D', color: 6 },
+    { name: 'Ravi Gupta', handle: '@ravigux', verified: false, text: 'The tension curve of pull-to-refresh is genius: linear resistance at first, then it "locks" with a satisfying snap. Pure physics-inspired design.', avatar: 'R', color: 7 },
+    { name: 'Sophie Turner', handle: '@sophieturnerux', verified: true, text: 'Built a pull-to-refresh component today that weighs only 2KB. No libraries. Sometimes vanilla JS is all you need.', avatar: 'S', color: 8 },
+    { name: 'Jake Morrison', handle: '@jakemorrison', verified: false, text: 'Rule of thumb: if your loading animation plays for more than 3 seconds, show a progress bar instead of a spinner. Users need to see progress.', avatar: 'J', color: 9 },
+  ];
+
+  let newPostIndex = 0;
+  let refreshCount = 0;
+
+  // ── DOM refs ──
+  const feedContainer = document.getElementById('feedContainer');
+  const feedList = document.getElementById('feedList');
+  const ptrIndicator = document.getElementById('ptrIndicator');
+  const ptrSpinner = document.getElementById('ptrSpinner');
+  const ptrArc = document.getElementById('ptrArc');
+
+  // ── Render functions ──
+  function createTweetHTML(post, isNew) {
+    const verifiedSVG = post.verified
+      ? '<svg class="tweet-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.855-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.69-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.607-.274 1.264-.144 1.897.13.636.433 1.221.878 1.69.47.443 1.055.747 1.69.878.635.132 1.294.084 1.902-.139.272.588.704 1.09 1.24 1.448s1.167.554 1.813.572c.646-.018 1.273-.213 1.813-.568s.969-.855 1.24-1.448c.608.223 1.267.272 1.902.14.635-.131 1.22-.437 1.69-.879.445-.47.749-1.055.878-1.69.13-.634.08-1.29-.144-1.898.587-.273 1.087-.704 1.443-1.244.356-.541.555-1.171.574-1.818zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" fill="#1d9bf0"/></svg>'
+      : '';
+    const newBadge = isNew ? '<span class="new-badge">NEW</span>' : '';
+    const newClass = isNew ? ' new-post' : '';
+
+    return `<div class="tweet${newClass}">
+      ${newBadge}
+      <div class="tweet-avatar" style="background: ${avatarColors[post.color]}">${post.avatar}</div>
+      <div class="tweet-body">
+        <div class="tweet-header">
+          <span class="tweet-name">${post.name}</span>
+          ${verifiedSVG}
+          <span class="tweet-handle">${post.handle}</span>
+          <span class="tweet-dot">&middot;</span>
+          <span class="tweet-time">${post.time}</span>
+        </div>
+        <div class="tweet-text">${post.text.replace(/\n/g, '<br>')}</div>
+        <div class="tweet-actions">
+          <span class="tweet-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            ${post.replies || ''}
+          </span>
+          <span class="tweet-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12v1a3 3 0 003 3h10l4-4-4-4H7a3 3 0 00-3 3z"/></svg>
+            ${post.retweets || ''}
+          </span>
+          <span class="tweet-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            ${post.likes || ''}
+          </span>
+          <span class="tweet-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderInitialFeed() {
+    feedList.innerHTML = initialPosts.map(p => createTweetHTML(p, false)).join('');
+  }
+
+  // ── Pull-to-Refresh Logic ──
+  const THRESHOLD = 60;
+  const MAX_PULL = 120;
+  let isPulling = false;
+  let isRefreshing = false;
+  let startY = 0;
+  let currentPull = 0;
+  let thresholdCrossed = false;
+
+  function describeArc(progress) {
+    // progress: 0 to 1
+    const r = 10;
+    const cx = 14, cy = 14;
+    const angle = progress * 360;
+    const rad = (angle - 90) * Math.PI / 180;
+    const startRad = -90 * Math.PI / 180;
+    const x1 = cx + r * Math.cos(startRad);
+    const y1 = cy + r * Math.sin(startRad);
+    const x2 = cx + r * Math.cos(rad);
+    const y2 = cy + r * Math.sin(rad);
+    const largeArc = angle > 180 ? 1 : 0;
+    if (angle <= 0) return '';
+    if (angle >= 359.9) {
+      // Full circle with tiny gap
+      return `M ${x1} ${y1} A ${r} ${r} 0 1 1 ${cx + r * Math.cos((269) * Math.PI / 180)} ${cy + r * Math.sin((269) * Math.PI / 180)}`;
+    }
+    return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+  }
+
+  function setPull(distance) {
+    // Apply rubber-band damping
+    const damped = distance < THRESHOLD
+      ? distance
+      : THRESHOLD + (distance - THRESHOLD) * 0.4;
+
+    const clamped = Math.min(damped, MAX_PULL);
+    currentPull = clamped;
+
+    // Move feed down
+    feedContainer.style.transform = `translateY(${clamped}px)`;
+
+    // Show indicator
+    ptrIndicator.style.height = clamped + 'px';
+
+    // Arc progress
+    const progress = Math.min(clamped / THRESHOLD, 1);
+    ptrArc.setAttribute('d', describeArc(progress));
+
+    // Rotate spinner proportionally
+    const rotation = (clamped / THRESHOLD) * 360;
+    ptrSpinner.querySelector('svg.arc').style.transform = `rotate(${rotation}deg)`;
+
+    // Threshold feedback
+    if (clamped >= THRESHOLD && !thresholdCrossed) {
+      thresholdCrossed = true;
+      feedContainer.classList.add('threshold-hit');
+      setTimeout(() => feedContainer.classList.remove('threshold-hit'), 150);
+    }
+    if (clamped < THRESHOLD) {
+      thresholdCrossed = false;
+    }
+  }
+
+  function resetPull(doRefresh) {
+    isPulling = false;
+
+    if (doRefresh && !isRefreshing) {
+      isRefreshing = true;
+
+      // Snap to spinner-visible position
+      feedContainer.classList.add('refreshing');
+      ptrIndicator.classList.add('refreshing');
+
+      feedContainer.style.transform = `translateY(${THRESHOLD}px)`;
+      ptrIndicator.style.height = THRESHOLD + 'px';
+
+      // Full arc, start spinning
+      ptrArc.setAttribute('d', describeArc(0.99));
+      ptrSpinner.classList.add('spinning');
+      ptrSpinner.querySelector('svg.arc').style.transform = '';
+
+      // Simulate network delay
+      const delay = 800 + Math.random() * 600;
+      setTimeout(() => finishRefresh(), delay);
+    } else if (!isRefreshing) {
+      // Snap back
+      feedContainer.classList.add('snapping');
+      ptrIndicator.classList.add('snapping');
+
+      feedContainer.style.transform = 'translateY(0)';
+      ptrIndicator.style.height = '0';
+
+      setTimeout(() => {
+        feedContainer.classList.remove('snapping');
+        ptrIndicator.classList.remove('snapping');
+        ptrArc.setAttribute('d', '');
+        ptrSpinner.querySelector('svg.arc').style.transform = '';
+      }, 300);
+    }
+  }
+
+  function finishRefresh() {
+    // Show checkmark
+    ptrSpinner.classList.remove('spinning');
+    ptrSpinner.classList.add('done');
+
+    setTimeout(() => {
+      // Insert new posts
+      addNewPosts();
+
+      // Collapse indicator
+      feedContainer.classList.remove('refreshing');
+      ptrIndicator.classList.remove('refreshing');
+      feedContainer.classList.add('snapping');
+      ptrIndicator.classList.add('snapping');
+
+      feedContainer.style.transform = 'translateY(0)';
+      ptrIndicator.style.height = '0';
+
+      setTimeout(() => {
+        feedContainer.classList.remove('snapping');
+        ptrIndicator.classList.remove('snapping');
+        ptrSpinner.classList.remove('done');
+        ptrArc.setAttribute('d', '');
+        ptrSpinner.querySelector('svg.arc').style.transform = '';
+        isRefreshing = false;
+
+        // Settle new post highlights after a bit
+        setTimeout(() => {
+          document.querySelectorAll('.tweet.new-post').forEach(el => {
+            el.classList.add('settled');
+          });
+        }, 1500);
+
+        // Remove new-post classes fully
+        setTimeout(() => {
+          document.querySelectorAll('.tweet.new-post').forEach(el => {
+            el.classList.remove('new-post', 'settled');
+          });
+          document.querySelectorAll('.new-badge').forEach(el => el.remove());
+        }, 4000);
+
+      }, 300);
+    }, 500);
+  }
+
+  function addNewPosts() {
+    refreshCount++;
+    // Add 1-2 new posts
+    const count = 1 + (refreshCount % 2);
+    const fragment = document.createDocumentFragment();
+    const tempDiv = document.createElement('div');
+
+    for (let i = 0; i < count; i++) {
+      const post = newPostPool[newPostIndex % newPostPool.length];
+      newPostIndex++;
+
+      const timeSuffixes = ['just now', '10s', '30s', '1m'];
+      const postData = {
+        ...post,
+        time: timeSuffixes[i % timeSuffixes.length],
+        replies: Math.floor(Math.random() * 15),
+        retweets: Math.floor(Math.random() * 60),
+        likes: Math.floor(Math.random() * 300) + 10,
+      };
+
+      tempDiv.innerHTML = createTweetHTML(postData, true);
+      const el = tempDiv.firstElementChild;
+      fragment.appendChild(el);
+    }
+
+    // Prepend
+    if (feedList.firstChild) {
+      feedList.insertBefore(fragment, feedList.firstChild);
+    } else {
+      feedList.appendChild(fragment);
+    }
+
+    // Stagger animation
+    const newTweets = feedList.querySelectorAll('.tweet.new-post:not(.animated)');
+    newTweets.forEach((el, idx) => {
+      el.style.animationDelay = (idx * 0.1) + 's';
+      el.classList.add('animated');
+    });
+  }
+
+  // ── Event Handlers ──
+
+  function getY(e) {
+    if (e.touches) return e.touches[0].clientY;
+    return e.clientY;
+  }
+
+  function onPointerDown(e) {
+    if (isRefreshing) return;
+    if (feedContainer.scrollTop > 0) return;
+
+    startY = getY(e);
+    isPulling = true;
+    currentPull = 0;
+    thresholdCrossed = false;
+
+    feedContainer.classList.remove('snapping', 'refreshing');
+    ptrIndicator.classList.remove('snapping', 'refreshing');
+  }
+
+  function onPointerMove(e) {
+    if (!isPulling || isRefreshing) return;
+
+    const deltaY = getY(e) - startY;
+
+    if (deltaY <= 0) {
+      setPull(0);
+      return;
+    }
+
+    // If we're pulling down and feed is at top, prevent default scroll
+    if (feedContainer.scrollTop <= 0 && deltaY > 0) {
+      e.preventDefault();
+    }
+
+    setPull(deltaY);
+  }
+
+  function onPointerUp(e) {
+    if (!isPulling || isRefreshing) return;
+
+    const crossed = currentPull >= THRESHOLD;
+    resetPull(crossed);
+  }
+
+  // Mouse events
+  feedContainer.addEventListener('mousedown', onPointerDown);
+  document.addEventListener('mousemove', onPointerMove);
+  document.addEventListener('mouseup', onPointerUp);
+
+  // Touch events
+  feedContainer.addEventListener('touchstart', onPointerDown, { passive: true });
+  feedContainer.addEventListener('touchmove', onPointerMove, { passive: false });
+  feedContainer.addEventListener('touchend', onPointerUp);
+
+  // Prevent drag on the phone frame to avoid image-drag issues
+  document.querySelector('.iphone-frame').addEventListener('dragstart', e => e.preventDefault());
+
+  // ── Initialize ──
+  renderInitialFeed();
+
+})();
+</script>
 </body>
 </html>
