@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Design Activity 1: Micro-interactions — Pull to Refresh</title>
+<title>Week 6 — Design Activities: Micro-interactions & Hi-Fi Prototype</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -18,17 +18,17 @@
   }
 
   .page {
-    max-width: 920px;
+    max-width: 960px;
     margin: 0 auto;
-    padding: 40px 24px 80px;
+    padding: 40px 24px 60px;
   }
 
-  /* ── Header ── */
-  .header {
+  /* ── Page Header ── */
+  .page-header {
     text-align: center;
-    margin-bottom: 48px;
+    margin-bottom: 56px;
   }
-  .header .badge {
+  .page-header .badge {
     display: inline-block;
     background: #e8e0f5;
     color: #6e3eba;
@@ -40,17 +40,58 @@
     text-transform: uppercase;
     margin-bottom: 16px;
   }
-  .header h1 {
-    font-size: 36px;
+  .page-header h1 {
+    font-size: 34px;
     font-weight: 800;
     color: #1d1d1f;
     margin-bottom: 8px;
   }
-  .header .subtitle {
-    font-size: 18px;
+  .page-header .subtitle {
+    font-size: 17px;
     color: #6e6e73;
     font-weight: 400;
   }
+
+  /* ── Section Dividers ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 64px 0 36px;
+  }
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #d2d2d7;
+  }
+  .section-divider .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #86868b;
+    white-space: nowrap;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .section-title h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .section-title p {
+    font-size: 15px;
+    color: #6e6e73;
+  }
+
+  /* ══════════════════════════════════════════
+     ACTIVITY 1 — Microinteractions
+     ══════════════════════════════════════════ */
 
   /* ── Framework bar ── */
   .framework-bar {
@@ -99,8 +140,8 @@
     margin-bottom: 32px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .showcase h2 {
-    font-size: 24px;
+  .showcase h3 {
+    font-size: 22px;
     font-weight: 700;
     margin-bottom: 6px;
     text-align: center;
@@ -140,7 +181,7 @@
     50%      { transform: translateY(4px); }
   }
 
-  /* ── Phone Frame ── */
+  /* ── Phone Frame (shared) ── */
   .phone-wrapper {
     display: flex;
     justify-content: center;
@@ -157,8 +198,9 @@
       0 0 0 4px #1a1a1a,
       0 20px 60px rgba(0,0,0,0.35),
       0 8px 20px rgba(0,0,0,0.2);
+    user-select: none;
+    -webkit-user-select: none;
   }
-  /* Notch */
   .iphone-notch {
     position: absolute;
     top: 14px;
@@ -181,7 +223,6 @@
     border-radius: 50%;
     background: #2a2a2e;
   }
-  /* Status bar */
   .status-bar {
     position: absolute;
     top: 16px;
@@ -198,14 +239,8 @@
     pointer-events: none;
   }
   .status-bar .time { margin-left: 4px; }
-  .status-bar .icons {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    margin-right: 4px;
-  }
+  .status-bar .icons { display: flex; gap: 4px; align-items: center; margin-right: 4px; }
   .status-bar .icons svg { width: 14px; height: 14px; }
-  /* Screen */
   .iphone-screen {
     position: relative;
     width: 100%;
@@ -214,13 +249,22 @@
     border-radius: 32px;
     overflow: hidden;
   }
+  .home-indicator {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    z-index: 25;
+  }
 
-  /* ── App Header inside phone ── */
+  /* ── Activity 1: App Header ── */
   .app-header {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 88px;
     background: rgba(255,255,255,0.92);
     backdrop-filter: blur(12px);
@@ -238,82 +282,48 @@
     justify-content: space-between;
   }
   .app-avatar {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     border-radius: 50%;
     background: linear-gradient(135deg, #667eea, #764ba2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 13px; font-weight: 700;
   }
   .app-logo {
-    font-size: 18px;
-    font-weight: 800;
-    color: #1d1d1f;
-    letter-spacing: -0.5px;
+    font-size: 18px; font-weight: 800; color: #1d1d1f; letter-spacing: -0.5px;
   }
   .app-header-icon {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
   }
   .app-header-icon svg { width: 22px; height: 22px; color: #1d1d1f; }
 
   /* ── Pull-to-Refresh Indicator ── */
   .ptr-indicator {
     position: absolute;
-    top: 88px;
-    left: 0;
-    right: 0;
+    top: 88px; left: 0; right: 0;
     height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     overflow: hidden;
     z-index: 5;
     background: #fff;
     transition: none;
   }
-  .ptr-indicator.snapping {
-    transition: height 0.3s cubic-bezier(0.2, 0, 0, 1);
-  }
-  .ptr-indicator.refreshing {
-    transition: height 0.3s cubic-bezier(0.2, 0, 0, 1);
-  }
-  .ptr-spinner {
-    width: 28px;
-    height: 28px;
-    position: relative;
-  }
-  .ptr-spinner svg {
-    width: 28px;
-    height: 28px;
-    transition: transform 0.1s linear;
-  }
-  .ptr-spinner.spinning svg {
-    animation: spin 0.7s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+  .ptr-indicator.snapping { transition: height 0.3s cubic-bezier(0.2,0,0,1); }
+  .ptr-indicator.refreshing { transition: height 0.3s cubic-bezier(0.2,0,0,1); }
+  .ptr-spinner { width: 28px; height: 28px; position: relative; }
+  .ptr-spinner svg { width: 28px; height: 28px; transition: transform 0.1s linear; }
+  .ptr-spinner.spinning svg { animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .ptr-spinner .check-mark {
     display: none;
     position: absolute;
     top: 0; left: 0;
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
   }
   .ptr-spinner.done svg.arc { display: none; }
   .ptr-spinner.done .check-mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: check-pop 0.35s cubic-bezier(0.2, 0, 0, 1.2);
+    display: flex; align-items: center; justify-content: center;
+    animation: check-pop 0.35s cubic-bezier(0.2,0,0,1.2);
   }
   @keyframes check-pop {
     0%   { transform: scale(0); opacity: 0; }
@@ -324,31 +334,16 @@
   /* ── Feed ── */
   .feed-container {
     position: absolute;
-    top: 88px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    top: 88px; left: 0; right: 0; bottom: 0;
+    overflow-y: auto; overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: none;
     transition: none;
   }
-  .feed-container.snapping {
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
-  }
-  .feed-container.refreshing {
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
-  }
-
-  .feed-list {
-    padding: 4px 0 20px;
-  }
-
-  /* Threshold bounce */
-  .feed-container.threshold-hit {
-    animation: threshold-bounce 0.15s ease-out;
-  }
+  .feed-container.snapping { transition: transform 0.3s cubic-bezier(0.2,0,0,1); }
+  .feed-container.refreshing { transition: transform 0.3s cubic-bezier(0.2,0,0,1); }
+  .feed-list { padding: 4px 0 20px; }
+  .feed-container.threshold-hit { animation: threshold-bounce 0.15s ease-out; }
   @keyframes threshold-bounce {
     0%   { filter: none; }
     50%  { filter: brightness(0.98); }
@@ -357,111 +352,41 @@
 
   /* ── Tweet / Post Card ── */
   .tweet {
-    display: flex;
-    gap: 10px;
+    display: flex; gap: 10px;
     padding: 12px 14px;
     border-bottom: 0.5px solid #eff3f4;
-    cursor: default;
-    position: relative;
+    cursor: default; position: relative;
   }
   .tweet.new-post {
-    animation: slide-in-post 0.45s cubic-bezier(0.2, 0, 0, 1) forwards;
+    animation: slide-in-post 0.45s cubic-bezier(0.2,0,0,1) forwards;
     background: #f0f7ff;
   }
-  .tweet.new-post.settled {
-    background: transparent;
-    transition: background 1s ease;
-  }
+  .tweet.new-post.settled { background: transparent; transition: background 1s ease; }
   @keyframes slide-in-post {
     0%   { opacity: 0; transform: translateY(-20px); }
     100% { opacity: 1; transform: translateY(0); }
   }
   .tweet-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 15px; font-weight: 700;
   }
-  .tweet-body {
-    flex: 1;
-    min-width: 0;
-  }
-  .tweet-header {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 2px;
-    flex-wrap: wrap;
-  }
-  .tweet-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #0f1419;
-    white-space: nowrap;
-  }
-  .tweet-verified {
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
-  }
-  .tweet-handle {
-    font-size: 12px;
-    color: #536471;
-    white-space: nowrap;
-  }
-  .tweet-dot {
-    font-size: 12px;
-    color: #536471;
-  }
-  .tweet-time {
-    font-size: 12px;
-    color: #536471;
-    white-space: nowrap;
-  }
-  .tweet-text {
-    font-size: 13px;
-    line-height: 1.45;
-    color: #0f1419;
-    margin-bottom: 8px;
-    word-wrap: break-word;
-  }
-  .tweet-actions {
-    display: flex;
-    gap: 0;
-    justify-content: space-between;
-    max-width: 200px;
-  }
-  .tweet-action {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: #536471;
-  }
-  .tweet-action svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  /* New badge */
+  .tweet-body { flex: 1; min-width: 0; }
+  .tweet-header { display: flex; align-items: center; gap: 4px; margin-bottom: 2px; flex-wrap: wrap; }
+  .tweet-name { font-size: 13px; font-weight: 700; color: #0f1419; white-space: nowrap; }
+  .tweet-verified { width: 14px; height: 14px; flex-shrink: 0; }
+  .tweet-handle { font-size: 12px; color: #536471; white-space: nowrap; }
+  .tweet-dot { font-size: 12px; color: #536471; }
+  .tweet-time { font-size: 12px; color: #536471; white-space: nowrap; }
+  .tweet-text { font-size: 13px; line-height: 1.45; color: #0f1419; margin-bottom: 8px; word-wrap: break-word; }
+  .tweet-actions { display: flex; gap: 0; justify-content: space-between; max-width: 200px; }
+  .tweet-action { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #536471; }
+  .tweet-action svg { width: 14px; height: 14px; }
   .new-badge {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    font-size: 9px;
-    font-weight: 700;
-    color: #1d9bf0;
-    background: #e8f5fd;
-    padding: 2px 6px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    position: absolute; top: 8px; right: 12px;
+    font-size: 9px; font-weight: 700; color: #1d9bf0;
+    background: #e8f5fd; padding: 2px 6px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.5px;
     animation: fade-badge 3s ease forwards;
   }
   @keyframes fade-badge {
@@ -469,38 +394,19 @@
     100%    { opacity: 0; }
   }
 
-  /* ── Bottom nav ── */
-  .bottom-nav {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  /* ── Activity 1 Bottom nav ── */
+  .a1-bottom-nav {
+    position: absolute; bottom: 0; left: 0; right: 0;
     height: 50px;
     background: rgba(255,255,255,0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-top: 0.5px solid #e5e5ea;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 8px;
-    z-index: 10;
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 0 8px; z-index: 10;
   }
-  .bottom-nav svg { width: 22px; height: 22px; color: #536471; }
-  .bottom-nav .active svg { color: #1d1d1f; }
-
-  /* ── Home indicator ── */
-  .home-indicator {
-    position: absolute;
-    bottom: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background: #1a1a1a;
-    border-radius: 2px;
-    z-index: 25;
-  }
+  .a1-bottom-nav svg { width: 22px; height: 22px; color: #536471; }
+  .a1-bottom-nav .active svg { color: #1d1d1f; }
 
   /* ── Elements grid ── */
   .elements-grid {
@@ -512,7 +418,6 @@
   @media (max-width: 640px) {
     .elements-grid { grid-template-columns: 1fr; }
   }
-
   .element-card {
     background: #fff;
     border-radius: 16px;
@@ -526,50 +431,23 @@
   .element-card.rules   { border-color: #ff9f0a; }
   .element-card.feedback { border-color: #ff3b30; }
   .element-card.loops   { border-color: #007aff; }
-
-  .element-card .card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
+  .element-card .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .element-card .card-num {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff;
   }
   .element-card.trigger .card-num  { background: #34c759; }
   .element-card.rules .card-num    { background: #ff9f0a; }
   .element-card.feedback .card-num { background: #ff3b30; }
   .element-card.loops .card-num    { background: #007aff; }
-
-  .element-card .card-title {
-    font-size: 18px;
-    font-weight: 700;
-  }
-  .element-card .card-body {
-    font-size: 14px;
-    color: #3a3a3c;
-    line-height: 1.7;
-  }
-  .element-card .card-body strong {
-    color: #1d1d1f;
-  }
+  .element-card .card-title { font-size: 18px; font-weight: 700; }
+  .element-card .card-body { font-size: 14px; color: #3a3a3c; line-height: 1.7; }
+  .element-card .card-body strong { color: #1d1d1f; }
   .element-card .try-ref {
-    display: inline-block;
-    margin-top: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #6e3eba;
-    background: #f3eefa;
-    padding: 4px 10px;
-    border-radius: 6px;
+    display: inline-block; margin-top: 8px;
+    font-size: 12px; font-weight: 600; color: #6e3eba;
+    background: #f3eefa; padding: 4px 10px; border-radius: 6px;
   }
 
   /* ── Summary ── */
@@ -580,54 +458,555 @@
     padding: 36px 40px;
     box-shadow: 0 4px 20px rgba(110,62,186,0.3);
   }
-  .summary-card h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 12px;
+  .summary-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .summary-card p { font-size: 15px; line-height: 1.7; opacity: 0.92; }
+
+
+  /* ══════════════════════════════════════════
+     ACTIVITY 2 — MindFlow Hi-Fi Prototype
+     ══════════════════════════════════════════ */
+
+  .a2-showcase {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 40px 48px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .summary-card p {
+  .a2-showcase h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .a2-showcase .desc {
     font-size: 15px;
-    line-height: 1.7;
-    opacity: 0.92;
+    color: #6e6e73;
+    margin-bottom: 28px;
+    text-align: center;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .footer {
-    text-align: center;
-    margin-top: 48px;
-    font-size: 13px;
-    color: #aeaeb2;
+  /* ── MindFlow Phone ── */
+  .mf-screen {
+    position: relative;
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #f0eaff 0%, #e8f4f8 50%, #faf8f5 100%);
+    border-radius: 32px;
+    overflow: hidden;
   }
+  .mf-status-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 28px 0;
+    z-index: 15;
+    font-size: 12px; font-weight: 600; color: #1d1d1f;
+    pointer-events: none;
+  }
+  .mf-status-bar .icons { display: flex; gap: 4px; align-items: center; }
+  .mf-status-bar .icons svg { width: 14px; height: 14px; }
+
+  /* Tab views */
+  .mf-tab-view {
+    position: absolute;
+    top: 44px; left: 0; right: 0; bottom: 56px;
+    overflow-y: auto; overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    padding: 16px 16px 20px;
+  }
+  .mf-tab-view.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  /* Bottom tab bar */
+  .mf-tab-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 0.5px solid #e0dce8;
+    display: flex; align-items: center; justify-content: space-around;
+    z-index: 10;
+    padding: 0 4px;
+  }
+  .mf-tab-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    cursor: pointer;
+    padding: 6px 12px 4px;
+    border-radius: 10px;
+    transition: background 0.2s;
+    border: none; background: none;
+    font-family: inherit;
+  }
+  .mf-tab-btn svg { width: 22px; height: 22px; color: #a8a3b5; transition: color 0.2s; }
+  .mf-tab-btn span { font-size: 9px; font-weight: 600; color: #a8a3b5; transition: color 0.2s; }
+  .mf-tab-btn.active svg { color: #6e3eba; }
+  .mf-tab-btn.active span { color: #6e3eba; }
+
+  /* ── MindFlow Components ── */
+
+  /* Greeting */
+  .mf-greeting { margin-bottom: 20px; }
+  .mf-greeting .hi { font-size: 14px; color: #8e8a9a; font-weight: 500; }
+  .mf-greeting .name { font-size: 22px; font-weight: 800; color: #2d2640; margin-top: 2px; }
+
+  /* Wellness ring */
+  .mf-score-card {
+    background: linear-gradient(135deg, #7c5cbf, #5bb8c9);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 16px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .mf-score-card::after {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .mf-ring-wrap {
+    width: 80px; height: 80px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .mf-ring-wrap svg { width: 80px; height: 80px; transform: rotate(-90deg); }
+  .mf-ring-bg { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 6; }
+  .mf-ring-fg {
+    fill: none; stroke: #fff; stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 201;
+    stroke-dashoffset: 201;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mf-ring-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 20px; font-weight: 800; color: #fff;
+  }
+  .mf-score-info { flex: 1; }
+  .mf-score-info .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; }
+  .mf-score-info .title { font-size: 18px; font-weight: 700; margin-top: 2px; }
+  .mf-score-info .sub { font-size: 12px; opacity: 0.75; margin-top: 4px; }
+
+  /* Quick stats */
+  .mf-stats-row {
+    display: flex; gap: 10px; margin-bottom: 20px;
+  }
+  .mf-stat {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mf-stat .icon { font-size: 18px; margin-bottom: 4px; }
+  .mf-stat .val { font-size: 18px; font-weight: 800; color: #2d2640; }
+  .mf-stat .lbl { font-size: 9px; font-weight: 600; color: #a8a3b5; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+  /* Today's plan */
+  .mf-section-label {
+    font-size: 15px; font-weight: 700; color: #2d2640;
+    margin-bottom: 12px;
+  }
+  .mf-plan-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .mf-plan-card:active { transform: scale(0.97); }
+  .mf-plan-card .plan-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .mf-plan-card .plan-info { flex: 1; }
+  .mf-plan-card .plan-title { font-size: 14px; font-weight: 700; color: #2d2640; }
+  .mf-plan-card .plan-sub { font-size: 11px; color: #a8a3b5; margin-top: 1px; }
+  .mf-plan-card .plan-dur {
+    font-size: 11px; font-weight: 600; color: #6e3eba;
+    background: #f0eaff; padding: 4px 8px; border-radius: 8px;
+  }
+
+  /* Plan card expanded overlay */
+  .mf-plan-expanded {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #7c5cbf, #5bb8c9);
+    color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 12px;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+    border-radius: 14px;
+    z-index: 2;
+  }
+  .mf-plan-card.expanded .mf-plan-expanded {
+    opacity: 1; transform: scale(1); pointer-events: auto;
+  }
+  .mf-plan-expanded .exp-icon { font-size: 24px; margin-bottom: 4px; }
+  .mf-plan-expanded .exp-title { font-size: 14px; font-weight: 700; }
+  .mf-plan-expanded .exp-desc { font-size: 11px; opacity: 0.85; text-align: center; margin-top: 2px; }
+  .mf-plan-expanded .exp-close {
+    font-size: 10px; font-weight: 600;
+    margin-top: 6px; opacity: 0.7;
+    cursor: pointer;
+  }
+
+  /* ── Tab 2: Meditate ── */
+  .mf-cat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .mf-cat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .mf-cat-card:active { transform: scale(0.95); }
+  .mf-cat-card .cat-icon { font-size: 28px; margin-bottom: 6px; }
+  .mf-cat-card .cat-label { font-size: 13px; font-weight: 700; color: #2d2640; }
+
+  .mf-featured {
+    background: linear-gradient(135deg, #e8dff5, #d5ecf2);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .mf-featured:active { transform: scale(0.97); }
+  .mf-featured .feat-img {
+    width: 56px; height: 56px; border-radius: 14px;
+    background: linear-gradient(135deg, #7c5cbf, #5bb8c9);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0;
+  }
+  .mf-featured .feat-info { flex: 1; }
+  .mf-featured .feat-title { font-size: 15px; font-weight: 700; color: #2d2640; }
+  .mf-featured .feat-sub { font-size: 12px; color: #8e8a9a; margin-top: 2px; }
+  .mf-featured .feat-play {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #6e3eba; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .mf-featured .feat-play:active { transform: scale(0.9); background: #5a2ea0; }
+
+  /* Meditation timer overlay */
+  .mf-timer-overlay {
+    position: absolute;
+    top: 44px; left: 0; right: 0; bottom: 56px;
+    background: linear-gradient(180deg, #2d2640, #1a1430);
+    z-index: 20;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .mf-timer-overlay.active { opacity: 1; pointer-events: auto; }
+
+  .mf-breathing-circle {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,92,191,0.5), rgba(91,184,201,0.3));
+    border: 2px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    animation: none;
+    position: relative;
+  }
+  .mf-breathing-circle.animate {
+    animation: breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.85); opacity: 0.7; }
+    25% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1); opacity: 1; }
+    75% { transform: scale(0.85); opacity: 0.7; }
+  }
+  .mf-breathing-circle .timer-text {
+    font-size: 32px; font-weight: 800; color: #fff;
+  }
+  .mf-breathing-circle .timer-label {
+    font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.6); margin-top: 2px;
+  }
+  .mf-breathing-label {
+    font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5);
+    margin-top: 16px;
+    transition: opacity 0.5s;
+  }
+
+  /* Sound vis */
+  .mf-sound-vis {
+    display: flex; gap: 3px; align-items: flex-end;
+    height: 24px; margin-top: 20px;
+  }
+  .mf-sound-bar {
+    width: 3px; border-radius: 2px;
+    background: rgba(124,92,191,0.6);
+    transition: height 0.2s;
+  }
+  .mf-sound-vis.playing .mf-sound-bar {
+    animation: sound-bar 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes sound-bar {
+    0% { height: 4px; }
+    100% { height: 20px; }
+  }
+
+  .mf-timer-controls {
+    display: flex; gap: 24px; margin-top: 28px;
+  }
+  .mf-timer-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    font-size: 18px;
+  }
+  .mf-timer-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.15); }
+
+  /* ── Tab 3: Journal ── */
+  .mf-mood-row {
+    display: flex; justify-content: space-between; gap: 6px;
+    margin-bottom: 16px;
+  }
+  .mf-mood-btn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 12px 4px;
+    border-radius: 14px;
+    background: #fff;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.2s, background 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mf-mood-btn:active { transform: scale(0.92); }
+  .mf-mood-btn.selected {
+    border-color: #6e3eba;
+    background: #f0eaff;
+  }
+  .mf-mood-btn .mood-emoji { font-size: 24px; }
+  .mf-mood-btn .mood-label { font-size: 9px; font-weight: 700; color: #8e8a9a; text-transform: uppercase; }
+
+  .mf-mood-confirm {
+    text-align: center;
+    font-size: 13px; font-weight: 600; color: #6e3eba;
+    margin-bottom: 16px;
+    height: 24px;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .mf-mood-confirm.show {
+    opacity: 1; transform: translateY(0);
+  }
+
+  .mf-journal-entry {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mf-journal-entry .je-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .mf-journal-entry .je-mood { font-size: 18px; }
+  .mf-journal-entry .je-date { font-size: 12px; font-weight: 600; color: #8e8a9a; }
+  .mf-journal-entry .je-text { font-size: 12px; color: #5a5666; line-height: 1.5; }
+
+  .mf-add-note {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mf-add-note textarea {
+    width: 100%;
+    border: none; outline: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: #2d2640;
+    resize: none; height: 48px;
+    background: transparent;
+  }
+  .mf-add-note textarea::placeholder { color: #c4c0ce; }
+  .mf-add-note-btn {
+    display: inline-block;
+    background: #6e3eba;
+    color: #fff;
+    font-size: 12px; font-weight: 700;
+    padding: 8px 20px; border-radius: 10px;
+    border: none; cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s, background 0.15s;
+    margin-top: 6px;
+  }
+  .mf-add-note-btn:active { transform: scale(0.95); background: #5a2ea0; }
+
+  /* ── Tab 4: Profile ── */
+  .mf-profile-header {
+    display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 20px;
+  }
+  .mf-profile-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c5cbf, #5bb8c9);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 26px; font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .mf-profile-name { font-size: 18px; font-weight: 800; color: #2d2640; }
+  .mf-profile-email { font-size: 12px; color: #a8a3b5; }
+
+  .mf-streak {
+    background: linear-gradient(135deg, #ff9a44, #ff5e62);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .mf-streak .streak-flame { font-size: 28px; }
+  .mf-streak .streak-info { flex: 1; }
+  .mf-streak .streak-num { font-size: 22px; font-weight: 800; }
+  .mf-streak .streak-label { font-size: 11px; opacity: 0.85; }
+
+  .mf-profile-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .mf-pstat {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px 14px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mf-pstat .pstat-val { font-size: 20px; font-weight: 800; color: #2d2640; }
+  .mf-pstat .pstat-label { font-size: 10px; font-weight: 600; color: #a8a3b5; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+  /* Weekly chart */
+  .mf-chart-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mf-chart-card .chart-title {
+    font-size: 13px; font-weight: 700; color: #2d2640; margin-bottom: 12px;
+  }
+  .mf-chart {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    height: 80px; gap: 6px;
+  }
+  .mf-chart-col {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .mf-chart-bar {
+    width: 100%; border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, #7c5cbf, #a78bda);
+    transition: height 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mf-chart-day { font-size: 9px; font-weight: 600; color: #a8a3b5; }
+
+
+  /* ══════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════ */
+  .page-footer {
+    text-align: center;
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e5ea;
+  }
+  .page-footer .line1 {
+    font-size: 13px; color: #86868b; margin-bottom: 4px;
+  }
+  .page-footer .line2 {
+    font-size: 13px; font-weight: 600; color: #6e3eba;
+  }
+
 
   /* ── Responsive ── */
   @media (max-width: 480px) {
-    .page { padding: 20px 12px 60px; }
-    .header h1 { font-size: 26px; }
-    .header .subtitle { font-size: 15px; }
-    .showcase { padding: 24px 16px 32px; }
+    .page { padding: 20px 12px 40px; }
+    .page-header h1 { font-size: 24px; }
+    .page-header .subtitle { font-size: 14px; }
+    .section-title h2 { font-size: 22px; }
+    .showcase, .a2-showcase { padding: 24px 16px 32px; }
     .iphone-frame {
-      width: 280px;
-      height: 560px;
-      border-radius: 38px;
-      padding: 12px;
+      width: 280px; height: 560px;
+      border-radius: 38px; padding: 12px;
     }
-    .iphone-screen { border-radius: 28px; }
+    .iphone-screen, .mf-screen { border-radius: 28px; }
     .iphone-notch { width: 120px; height: 24px; border-radius: 0 0 14px 14px; }
     .framework-bar { padding: 16px 16px; gap: 8px; }
     .summary-card { padding: 28px 24px; }
   }
-
-  /* No text selection inside phone */
-  .iphone-frame { user-select: none; -webkit-user-select: none; }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="badge">Mobile Design</div>
-    <h1>Design Activity 1: Micro-interactions</h1>
-    <div class="subtitle">Identifying &amp; Describing the Four Elements of a Microinteraction</div>
+  <!-- ═══ PAGE HEADER ═══ -->
+  <div class="page-header">
+    <div class="badge">Week 6</div>
+    <h1>Mobile Design &amp; AI-Gen Wireframe/UI</h1>
+    <div class="subtitle">Two Design Activities: Micro-interactions &amp; Hi-Fi Prototyping</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 1: DESIGN ACTIVITY 1               -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <div class="section-divider">
+    <span class="section-label">Activity 1</span>
+  </div>
+
+  <div class="section-title">
+    <h2>Design Activity 1: Micro-interactions</h2>
+    <p>Identifying &amp; Describing the Four Elements of a Microinteraction</p>
   </div>
 
   <!-- Framework bar -->
@@ -643,9 +1022,9 @@
     <div class="fw-result"><div class="fw-icon">&#10024;</div><div class="fw-label">Micro-interaction</div></div>
   </div>
 
-  <!-- Interactive Demo Showcase -->
+  <!-- Interactive Demo -->
   <div class="showcase">
-    <h2>Chosen Microinteraction: Pull to Refresh</h2>
+    <h3>Chosen Microinteraction: Pull to Refresh</h3>
     <p class="desc">Found on nearly every mobile app with a scrollable feed (e.g., Twitter/X, Instagram, Mail). The user drags the content downward to trigger a content reload.</p>
 
     <div class="try-hint">
@@ -658,11 +1037,8 @@
 
     <div class="phone-wrapper">
       <div class="iphone-frame">
-        <!-- Notch -->
         <div class="iphone-notch"></div>
-        <!-- Home indicator -->
         <div class="home-indicator"></div>
-
         <div class="iphone-screen" id="iphoneScreen">
           <!-- Status bar -->
           <div class="status-bar">
@@ -684,7 +1060,7 @@
             </div>
           </div>
 
-          <!-- Pull-to-refresh indicator -->
+          <!-- PTR indicator -->
           <div class="ptr-indicator" id="ptrIndicator">
             <div class="ptr-spinner" id="ptrSpinner">
               <svg class="arc" viewBox="0 0 28 28" fill="none">
@@ -702,13 +1078,11 @@
 
           <!-- Feed -->
           <div class="feed-container" id="feedContainer">
-            <div class="feed-list" id="feedList">
-              <!-- Posts injected by JS -->
-            </div>
+            <div class="feed-list" id="feedList"></div>
           </div>
 
           <!-- Bottom nav -->
-          <div class="bottom-nav">
+          <div class="a1-bottom-nav">
             <div class="active">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
             </div>
@@ -729,7 +1103,6 @@
 
   <!-- Four Elements -->
   <div class="elements-grid">
-
     <div class="element-card trigger">
       <div class="card-header">
         <div class="card-num">1</div>
@@ -741,7 +1114,6 @@
         <div class="try-ref">Try it above -- drag down inside the feed!</div>
       </div>
     </div>
-
     <div class="element-card rules">
       <div class="card-header">
         <div class="card-num">2</div>
@@ -756,7 +1128,6 @@
         <div class="try-ref">Try it above -- pull only halfway and release to see the cancel!</div>
       </div>
     </div>
-
     <div class="element-card feedback">
       <div class="card-header">
         <div class="card-num">3</div>
@@ -769,7 +1140,6 @@
         <div class="try-ref">Try it above -- watch the spinner transform into a checkmark!</div>
       </div>
     </div>
-
     <div class="element-card loops">
       <div class="card-header">
         <div class="card-num">4</div>
@@ -781,7 +1151,6 @@
         <div class="try-ref">Try it above -- refresh multiple times to see new posts appear!</div>
       </div>
     </div>
-
   </div>
 
   <!-- Summary -->
@@ -792,8 +1161,342 @@
     </p>
   </div>
 
-  <div class="footer">
-    Design Activity 1 &middot; Micro-interactions &middot; Mobile Design
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 2: DESIGN ACTIVITY 2               -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <div class="section-divider">
+    <span class="section-label">Activity 2</span>
+  </div>
+
+  <div class="section-title">
+    <h2>Design Activity 2: Hi-Fi Prototype</h2>
+    <p>Generative UI -- A fully interactive mobile wellness app prototype</p>
+  </div>
+
+  <div class="a2-showcase">
+    <h3>MindFlow -- Wellness &amp; Mindfulness</h3>
+    <p class="desc">An interactive hi-fi prototype of a calming mindfulness app. Tap the tabs below to navigate between Dashboard, Meditate, Journal, and Profile screens.</p>
+
+    <div class="phone-wrapper">
+      <div class="iphone-frame">
+        <div class="iphone-notch"></div>
+        <div class="home-indicator"></div>
+        <div class="mf-screen" id="mfScreen">
+          <!-- Status bar -->
+          <div class="mf-status-bar">
+            <span>9:41</span>
+            <span class="icons">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-3zm3.5-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-5zm3.5-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3.5-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-9z"/></svg>
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8.5A.5.5 0 0 1 .5 8H6a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/><path d="M15 3a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3zm-1 3H2V3h12v3z"/><rect x="13" y="3" width="1.5" height="4" rx=".5" fill="currentColor"/></svg>
+            </span>
+          </div>
+
+          <!-- ── TAB 1: HOME ── -->
+          <div class="mf-tab-view active" id="mfTabHome">
+            <div class="mf-greeting">
+              <div class="hi" id="mfGreetingText">Good morning,</div>
+              <div class="name">Yusong</div>
+            </div>
+
+            <div class="mf-score-card">
+              <div class="mf-ring-wrap">
+                <svg viewBox="0 0 80 80">
+                  <circle class="mf-ring-bg" cx="40" cy="40" r="32"/>
+                  <circle class="mf-ring-fg" id="mfRingFg" cx="40" cy="40" r="32"/>
+                </svg>
+                <div class="mf-ring-text" id="mfScoreText">0</div>
+              </div>
+              <div class="mf-score-info">
+                <div class="label">Daily Wellness</div>
+                <div class="title">Your Score</div>
+                <div class="sub">+5 from yesterday</div>
+              </div>
+            </div>
+
+            <div class="mf-stats-row">
+              <div class="mf-stat">
+                <div class="icon">&#129502;</div>
+                <div class="val">18</div>
+                <div class="lbl">Minutes</div>
+              </div>
+              <div class="mf-stat">
+                <div class="icon">&#128522;</div>
+                <div class="val">8.2</div>
+                <div class="lbl">Mood</div>
+              </div>
+              <div class="mf-stat">
+                <div class="icon">&#128164;</div>
+                <div class="val">7.5h</div>
+                <div class="lbl">Sleep</div>
+              </div>
+            </div>
+
+            <div class="mf-section-label">Today's Plan</div>
+
+            <div class="mf-plan-card" data-plan="0">
+              <div class="plan-icon" style="background:#f0eaff;">&#127774;</div>
+              <div class="plan-info">
+                <div class="plan-title">Morning Meditation</div>
+                <div class="plan-sub">Start your day with clarity</div>
+              </div>
+              <div class="plan-dur">10 min</div>
+              <div class="mf-plan-expanded">
+                <div class="exp-icon">&#127774;</div>
+                <div class="exp-title">Morning Meditation</div>
+                <div class="exp-desc">A guided session to center your mind and set positive intentions for the day ahead.</div>
+                <div class="exp-close">tap to close</div>
+              </div>
+            </div>
+
+            <div class="mf-plan-card" data-plan="1">
+              <div class="plan-icon" style="background:#e0f5ee;">&#127744;</div>
+              <div class="plan-info">
+                <div class="plan-title">Breathing Exercise</div>
+                <div class="plan-sub">4-7-8 technique</div>
+              </div>
+              <div class="plan-dur">5 min</div>
+              <div class="mf-plan-expanded">
+                <div class="exp-icon">&#127744;</div>
+                <div class="exp-title">Breathing Exercise</div>
+                <div class="exp-desc">The 4-7-8 breathing technique helps calm your nervous system and reduce anxiety.</div>
+                <div class="exp-close">tap to close</div>
+              </div>
+            </div>
+
+            <div class="mf-plan-card" data-plan="2">
+              <div class="plan-icon" style="background:#fef3e2;">&#128214;</div>
+              <div class="plan-info">
+                <div class="plan-title">Evening Journal</div>
+                <div class="plan-sub">Reflect on your day</div>
+              </div>
+              <div class="plan-dur">8 min</div>
+              <div class="mf-plan-expanded">
+                <div class="exp-icon">&#128214;</div>
+                <div class="exp-title">Evening Journal</div>
+                <div class="exp-desc">Wind down by journaling about gratitude, achievements, and lessons from today.</div>
+                <div class="exp-close">tap to close</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TAB 2: MEDITATE ── -->
+          <div class="mf-tab-view" id="mfTabMeditate">
+            <div class="mf-section-label">Categories</div>
+            <div class="mf-cat-grid">
+              <div class="mf-cat-card">
+                <div class="cat-icon">&#127919;</div>
+                <div class="cat-label">Focus</div>
+              </div>
+              <div class="mf-cat-card">
+                <div class="cat-icon">&#127796;</div>
+                <div class="cat-label">Relax</div>
+              </div>
+              <div class="mf-cat-card">
+                <div class="cat-icon">&#127769;</div>
+                <div class="cat-label">Sleep</div>
+              </div>
+              <div class="mf-cat-card">
+                <div class="cat-icon">&#127744;</div>
+                <div class="cat-label">Breathe</div>
+              </div>
+            </div>
+
+            <div class="mf-section-label">Featured</div>
+            <div class="mf-featured" id="mfFeatured">
+              <div class="feat-img">&#127774;</div>
+              <div class="feat-info">
+                <div class="feat-title">Calm Morning</div>
+                <div class="feat-sub">10 min guided meditation</div>
+              </div>
+              <div class="feat-play" id="mfPlayBtn">&#9654;</div>
+            </div>
+
+            <div class="mf-section-label">Quick Sessions</div>
+            <div class="mf-featured" style="background: linear-gradient(135deg, #fef3e2, #fce4ec);">
+              <div class="feat-img" style="background: linear-gradient(135deg, #ff9a44, #ff5e62);">&#128293;</div>
+              <div class="feat-info">
+                <div class="feat-title">Energy Boost</div>
+                <div class="feat-sub">5 min breathing exercise</div>
+              </div>
+              <div class="feat-play" style="background:#ff6b4a;">&#9654;</div>
+            </div>
+            <div class="mf-featured" style="background: linear-gradient(135deg, #e0f5ee, #d5ecf2);">
+              <div class="feat-img" style="background: linear-gradient(135deg, #34c759, #30b0c7);">&#127769;</div>
+              <div class="feat-info">
+                <div class="feat-title">Deep Sleep</div>
+                <div class="feat-sub">15 min sleep meditation</div>
+              </div>
+              <div class="feat-play" style="background:#34c759;">&#9654;</div>
+            </div>
+          </div>
+
+          <!-- Meditation Timer Overlay -->
+          <div class="mf-timer-overlay" id="mfTimerOverlay">
+            <div class="mf-breathing-circle" id="mfBreathCircle">
+              <div class="timer-text" id="mfTimerText">5:00</div>
+              <div class="timer-label">remaining</div>
+            </div>
+            <div class="mf-breathing-label" id="mfBreathLabel">Breathe in...</div>
+            <div class="mf-sound-vis" id="mfSoundVis">
+              <div class="mf-sound-bar" style="height:4px;animation-delay:0s;"></div>
+              <div class="mf-sound-bar" style="height:8px;animation-delay:0.1s;"></div>
+              <div class="mf-sound-bar" style="height:12px;animation-delay:0.2s;"></div>
+              <div class="mf-sound-bar" style="height:6px;animation-delay:0.3s;"></div>
+              <div class="mf-sound-bar" style="height:16px;animation-delay:0.15s;"></div>
+              <div class="mf-sound-bar" style="height:10px;animation-delay:0.25s;"></div>
+              <div class="mf-sound-bar" style="height:4px;animation-delay:0.35s;"></div>
+              <div class="mf-sound-bar" style="height:14px;animation-delay:0.05s;"></div>
+              <div class="mf-sound-bar" style="height:8px;animation-delay:0.2s;"></div>
+              <div class="mf-sound-bar" style="height:6px;animation-delay:0.4s;"></div>
+              <div class="mf-sound-bar" style="height:10px;animation-delay:0.12s;"></div>
+              <div class="mf-sound-bar" style="height:4px;animation-delay:0.28s;"></div>
+            </div>
+            <div class="mf-timer-controls">
+              <div class="mf-timer-btn" id="mfTimerPause">&#10074;&#10074;</div>
+              <div class="mf-timer-btn" id="mfTimerStop">&#9632;</div>
+            </div>
+          </div>
+
+          <!-- ── TAB 3: JOURNAL ── -->
+          <div class="mf-tab-view" id="mfTabJournal">
+            <div class="mf-section-label">How are you feeling?</div>
+            <div class="mf-mood-row">
+              <div class="mf-mood-btn" data-mood="great">
+                <div class="mood-emoji">&#128525;</div>
+                <div class="mood-label">Great</div>
+              </div>
+              <div class="mf-mood-btn" data-mood="good">
+                <div class="mood-emoji">&#128522;</div>
+                <div class="mood-label">Good</div>
+              </div>
+              <div class="mf-mood-btn" data-mood="okay">
+                <div class="mood-emoji">&#128528;</div>
+                <div class="mood-label">Okay</div>
+              </div>
+              <div class="mf-mood-btn" data-mood="low">
+                <div class="mood-emoji">&#128532;</div>
+                <div class="mood-label">Low</div>
+              </div>
+              <div class="mf-mood-btn" data-mood="bad">
+                <div class="mood-emoji">&#128543;</div>
+                <div class="mood-label">Bad</div>
+              </div>
+            </div>
+            <div class="mf-mood-confirm" id="mfMoodConfirm">Mood recorded -- keep it up!</div>
+
+            <div class="mf-section-label">Add a Note</div>
+            <div class="mf-add-note">
+              <textarea id="mfNoteInput" placeholder="Write about your day..."></textarea>
+              <button class="mf-add-note-btn" id="mfAddNoteBtn">Save Note</button>
+            </div>
+
+            <div class="mf-section-label">Recent Entries</div>
+            <div id="mfJournalEntries">
+              <div class="mf-journal-entry">
+                <div class="je-header">
+                  <div class="je-mood">&#128522;</div>
+                  <div class="je-date">Mar 8, 2026</div>
+                </div>
+                <div class="je-text">Had a great meditation session this morning. Feeling focused and ready for the week ahead.</div>
+              </div>
+              <div class="mf-journal-entry">
+                <div class="je-header">
+                  <div class="je-mood">&#128525;</div>
+                  <div class="je-date">Mar 7, 2026</div>
+                </div>
+                <div class="je-text">Hit a 7-day meditation streak! The breathing exercises are really helping with my sleep quality.</div>
+              </div>
+              <div class="mf-journal-entry">
+                <div class="je-header">
+                  <div class="je-mood">&#128528;</div>
+                  <div class="je-date">Mar 6, 2026</div>
+                </div>
+                <div class="je-text">Busy day at work. Only managed a short 5-minute session but it helped clear my mind.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TAB 4: PROFILE ── -->
+          <div class="mf-tab-view" id="mfTabProfile">
+            <div class="mf-profile-header">
+              <div class="mf-profile-avatar">Y</div>
+              <div class="mf-profile-name">Yusong He</div>
+              <div class="mf-profile-email">yusong@mindflow.app</div>
+            </div>
+
+            <div class="mf-streak">
+              <div class="streak-flame">&#128293;</div>
+              <div class="streak-info">
+                <div class="streak-num">12 Days</div>
+                <div class="streak-label">Current Streak</div>
+              </div>
+            </div>
+
+            <div class="mf-profile-stats">
+              <div class="mf-pstat">
+                <div class="pstat-val">47</div>
+                <div class="pstat-label">Sessions</div>
+              </div>
+              <div class="mf-pstat">
+                <div class="pstat-val">312</div>
+                <div class="pstat-label">Minutes</div>
+              </div>
+              <div class="mf-pstat">
+                <div class="pstat-val">8.1</div>
+                <div class="pstat-label">Avg Mood</div>
+              </div>
+              <div class="mf-pstat">
+                <div class="pstat-val">14</div>
+                <div class="pstat-label">Best Streak</div>
+              </div>
+            </div>
+
+            <div class="mf-chart-card">
+              <div class="chart-title">Weekly Activity</div>
+              <div class="mf-chart" id="mfChart">
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="45" style="height:0px;"></div><div class="mf-chart-day">Mon</div></div>
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="65" style="height:0px;"></div><div class="mf-chart-day">Tue</div></div>
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="30" style="height:0px;"></div><div class="mf-chart-day">Wed</div></div>
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="72" style="height:0px;"></div><div class="mf-chart-day">Thu</div></div>
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="55" style="height:0px;"></div><div class="mf-chart-day">Fri</div></div>
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="40" style="height:0px;"></div><div class="mf-chart-day">Sat</div></div>
+                <div class="mf-chart-col"><div class="mf-chart-bar" data-h="60" style="height:0px;"></div><div class="mf-chart-day">Sun</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── MindFlow Tab Bar ── -->
+          <div class="mf-tab-bar">
+            <button class="mf-tab-btn active" data-tab="home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>Home</span>
+            </button>
+            <button class="mf-tab-btn" data-tab="meditate">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <span>Meditate</span>
+            </button>
+            <button class="mf-tab-btn" data-tab="journal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span>Journal</span>
+            </button>
+            <button class="mf-tab-btn" data-tab="profile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Profile</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="page-footer">
+    <div class="line1">Design Activity -- Week 6 &middot; Mobile Design &amp;&amp; AI-Gen Wireframe/UI</div>
+    <div class="line2">Yusong He &middot; CMAA5043</div>
   </div>
 
 </div>
@@ -802,7 +1505,10 @@
 (function() {
   'use strict';
 
-  // ── Post Data ──
+  /* ══════════════════════════════════════════════════
+     ACTIVITY 1 — Pull-to-Refresh
+     ══════════════════════════════════════════════════ */
+
   const avatarColors = [
     'linear-gradient(135deg, #667eea, #764ba2)',
     'linear-gradient(135deg, #f093fb, #f5576c)',
@@ -845,14 +1551,12 @@
   let newPostIndex = 0;
   let refreshCount = 0;
 
-  // ── DOM refs ──
   const feedContainer = document.getElementById('feedContainer');
   const feedList = document.getElementById('feedList');
   const ptrIndicator = document.getElementById('ptrIndicator');
   const ptrSpinner = document.getElementById('ptrSpinner');
   const ptrArc = document.getElementById('ptrArc');
 
-  // ── Render functions ──
   function createTweetHTML(post, isNew) {
     const verifiedSVG = post.verified
       ? '<svg class="tweet-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.855-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.69-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.607-.274 1.264-.144 1.897.13.636.433 1.221.878 1.69.47.443 1.055.747 1.69.878.635.132 1.294.084 1.902-.139.272.588.704 1.09 1.24 1.448s1.167.554 1.813.572c.646-.018 1.273-.213 1.813-.568s.969-.855 1.24-1.448c.608.223 1.267.272 1.902.14.635-.131 1.22-.437 1.69-.879.445-.47.749-1.055.878-1.69.13-.634.08-1.29-.144-1.898.587-.273 1.087-.704 1.443-1.244.356-.541.555-1.171.574-1.818zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" fill="#1d9bf0"/></svg>'
@@ -860,136 +1564,95 @@
     const newBadge = isNew ? '<span class="new-badge">NEW</span>' : '';
     const newClass = isNew ? ' new-post' : '';
 
-    return `<div class="tweet${newClass}">
-      ${newBadge}
-      <div class="tweet-avatar" style="background: ${avatarColors[post.color]}">${post.avatar}</div>
-      <div class="tweet-body">
-        <div class="tweet-header">
-          <span class="tweet-name">${post.name}</span>
-          ${verifiedSVG}
-          <span class="tweet-handle">${post.handle}</span>
-          <span class="tweet-dot">&middot;</span>
-          <span class="tweet-time">${post.time}</span>
-        </div>
-        <div class="tweet-text">${post.text.replace(/\n/g, '<br>')}</div>
-        <div class="tweet-actions">
-          <span class="tweet-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-            ${post.replies || ''}
-          </span>
-          <span class="tweet-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12v1a3 3 0 003 3h10l4-4-4-4H7a3 3 0 00-3 3z"/></svg>
-            ${post.retweets || ''}
-          </span>
-          <span class="tweet-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-            ${post.likes || ''}
-          </span>
-          <span class="tweet-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          </span>
-        </div>
-      </div>
-    </div>`;
+    return '<div class="tweet' + newClass + '">' +
+      newBadge +
+      '<div class="tweet-avatar" style="background: ' + avatarColors[post.color] + '">' + post.avatar + '</div>' +
+      '<div class="tweet-body">' +
+        '<div class="tweet-header">' +
+          '<span class="tweet-name">' + post.name + '</span>' +
+          verifiedSVG +
+          '<span class="tweet-handle">' + post.handle + '</span>' +
+          '<span class="tweet-dot">&middot;</span>' +
+          '<span class="tweet-time">' + post.time + '</span>' +
+        '</div>' +
+        '<div class="tweet-text">' + post.text.replace(/\n/g, '<br>') + '</div>' +
+        '<div class="tweet-actions">' +
+          '<span class="tweet-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> ' + (post.replies || '') + '</span>' +
+          '<span class="tweet-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12v1a3 3 0 003 3h10l4-4-4-4H7a3 3 0 00-3 3z"/></svg> ' + (post.retweets || '') + '</span>' +
+          '<span class="tweet-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> ' + (post.likes || '') + '</span>' +
+          '<span class="tweet-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg></span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   function renderInitialFeed() {
-    feedList.innerHTML = initialPosts.map(p => createTweetHTML(p, false)).join('');
+    feedList.innerHTML = initialPosts.map(function(p) { return createTweetHTML(p, false); }).join('');
   }
 
-  // ── Pull-to-Refresh Logic ──
-  const THRESHOLD = 60;
-  const MAX_PULL = 120;
-  let isPulling = false;
-  let isRefreshing = false;
-  let startY = 0;
-  let currentPull = 0;
-  let thresholdCrossed = false;
+  // Pull-to-refresh logic
+  var THRESHOLD = 60;
+  var MAX_PULL = 120;
+  var isPulling = false;
+  var isRefreshing = false;
+  var startY = 0;
+  var currentPull = 0;
+  var thresholdCrossed = false;
 
   function describeArc(progress) {
-    // progress: 0 to 1
-    const r = 10;
-    const cx = 14, cy = 14;
-    const angle = progress * 360;
-    const rad = (angle - 90) * Math.PI / 180;
-    const startRad = -90 * Math.PI / 180;
-    const x1 = cx + r * Math.cos(startRad);
-    const y1 = cy + r * Math.sin(startRad);
-    const x2 = cx + r * Math.cos(rad);
-    const y2 = cy + r * Math.sin(rad);
-    const largeArc = angle > 180 ? 1 : 0;
+    var r = 10, cx = 14, cy = 14;
+    var angle = progress * 360;
+    var rad = (angle - 90) * Math.PI / 180;
+    var startRad = -90 * Math.PI / 180;
+    var x1 = cx + r * Math.cos(startRad);
+    var y1 = cy + r * Math.sin(startRad);
+    var x2 = cx + r * Math.cos(rad);
+    var y2 = cy + r * Math.sin(rad);
+    var largeArc = angle > 180 ? 1 : 0;
     if (angle <= 0) return '';
     if (angle >= 359.9) {
-      // Full circle with tiny gap
-      return `M ${x1} ${y1} A ${r} ${r} 0 1 1 ${cx + r * Math.cos((269) * Math.PI / 180)} ${cy + r * Math.sin((269) * Math.PI / 180)}`;
+      return 'M ' + x1 + ' ' + y1 + ' A ' + r + ' ' + r + ' 0 1 1 ' + (cx + r * Math.cos(269 * Math.PI / 180)) + ' ' + (cy + r * Math.sin(269 * Math.PI / 180));
     }
-    return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+    return 'M ' + x1 + ' ' + y1 + ' A ' + r + ' ' + r + ' 0 ' + largeArc + ' 1 ' + x2 + ' ' + y2;
   }
 
   function setPull(distance) {
-    // Apply rubber-band damping
-    const damped = distance < THRESHOLD
-      ? distance
-      : THRESHOLD + (distance - THRESHOLD) * 0.4;
-
-    const clamped = Math.min(damped, MAX_PULL);
+    var damped = distance < THRESHOLD ? distance : THRESHOLD + (distance - THRESHOLD) * 0.4;
+    var clamped = Math.min(damped, MAX_PULL);
     currentPull = clamped;
-
-    // Move feed down
-    feedContainer.style.transform = `translateY(${clamped}px)`;
-
-    // Show indicator
+    feedContainer.style.transform = 'translateY(' + clamped + 'px)';
     ptrIndicator.style.height = clamped + 'px';
-
-    // Arc progress
-    const progress = Math.min(clamped / THRESHOLD, 1);
+    var progress = Math.min(clamped / THRESHOLD, 1);
     ptrArc.setAttribute('d', describeArc(progress));
-
-    // Rotate spinner proportionally
-    const rotation = (clamped / THRESHOLD) * 360;
-    ptrSpinner.querySelector('svg.arc').style.transform = `rotate(${rotation}deg)`;
-
-    // Threshold feedback
+    var rotation = (clamped / THRESHOLD) * 360;
+    ptrSpinner.querySelector('svg.arc').style.transform = 'rotate(' + rotation + 'deg)';
     if (clamped >= THRESHOLD && !thresholdCrossed) {
       thresholdCrossed = true;
       feedContainer.classList.add('threshold-hit');
-      setTimeout(() => feedContainer.classList.remove('threshold-hit'), 150);
+      setTimeout(function() { feedContainer.classList.remove('threshold-hit'); }, 150);
     }
-    if (clamped < THRESHOLD) {
-      thresholdCrossed = false;
-    }
+    if (clamped < THRESHOLD) thresholdCrossed = false;
   }
 
   function resetPull(doRefresh) {
     isPulling = false;
-
     if (doRefresh && !isRefreshing) {
       isRefreshing = true;
-
-      // Snap to spinner-visible position
       feedContainer.classList.add('refreshing');
       ptrIndicator.classList.add('refreshing');
-
-      feedContainer.style.transform = `translateY(${THRESHOLD}px)`;
+      feedContainer.style.transform = 'translateY(' + THRESHOLD + 'px)';
       ptrIndicator.style.height = THRESHOLD + 'px';
-
-      // Full arc, start spinning
       ptrArc.setAttribute('d', describeArc(0.99));
       ptrSpinner.classList.add('spinning');
       ptrSpinner.querySelector('svg.arc').style.transform = '';
-
-      // Simulate network delay
-      const delay = 800 + Math.random() * 600;
-      setTimeout(() => finishRefresh(), delay);
+      var delay = 800 + Math.random() * 600;
+      setTimeout(function() { finishRefresh(); }, delay);
     } else if (!isRefreshing) {
-      // Snap back
       feedContainer.classList.add('snapping');
       ptrIndicator.classList.add('snapping');
-
       feedContainer.style.transform = 'translateY(0)';
       ptrIndicator.style.height = '0';
-
-      setTimeout(() => {
+      setTimeout(function() {
         feedContainer.classList.remove('snapping');
         ptrIndicator.classList.remove('snapping');
         ptrArc.setAttribute('d', '');
@@ -999,150 +1662,371 @@
   }
 
   function finishRefresh() {
-    // Show checkmark
     ptrSpinner.classList.remove('spinning');
     ptrSpinner.classList.add('done');
-
-    setTimeout(() => {
-      // Insert new posts
+    setTimeout(function() {
       addNewPosts();
-
-      // Collapse indicator
       feedContainer.classList.remove('refreshing');
       ptrIndicator.classList.remove('refreshing');
       feedContainer.classList.add('snapping');
       ptrIndicator.classList.add('snapping');
-
       feedContainer.style.transform = 'translateY(0)';
       ptrIndicator.style.height = '0';
-
-      setTimeout(() => {
+      setTimeout(function() {
         feedContainer.classList.remove('snapping');
         ptrIndicator.classList.remove('snapping');
         ptrSpinner.classList.remove('done');
         ptrArc.setAttribute('d', '');
         ptrSpinner.querySelector('svg.arc').style.transform = '';
         isRefreshing = false;
-
-        // Settle new post highlights after a bit
-        setTimeout(() => {
-          document.querySelectorAll('.tweet.new-post').forEach(el => {
-            el.classList.add('settled');
-          });
+        setTimeout(function() {
+          document.querySelectorAll('.tweet.new-post').forEach(function(el) { el.classList.add('settled'); });
         }, 1500);
-
-        // Remove new-post classes fully
-        setTimeout(() => {
-          document.querySelectorAll('.tweet.new-post').forEach(el => {
-            el.classList.remove('new-post', 'settled');
-          });
-          document.querySelectorAll('.new-badge').forEach(el => el.remove());
+        setTimeout(function() {
+          document.querySelectorAll('.tweet.new-post').forEach(function(el) { el.classList.remove('new-post', 'settled'); });
+          document.querySelectorAll('.new-badge').forEach(function(el) { el.remove(); });
         }, 4000);
-
       }, 300);
     }, 500);
   }
 
   function addNewPosts() {
     refreshCount++;
-    // Add 1-2 new posts
-    const count = 1 + (refreshCount % 2);
-    const fragment = document.createDocumentFragment();
-    const tempDiv = document.createElement('div');
-
-    for (let i = 0; i < count; i++) {
-      const post = newPostPool[newPostIndex % newPostPool.length];
+    var count = 1 + (refreshCount % 2);
+    var fragment = document.createDocumentFragment();
+    var tempDiv = document.createElement('div');
+    for (var i = 0; i < count; i++) {
+      var post = newPostPool[newPostIndex % newPostPool.length];
       newPostIndex++;
-
-      const timeSuffixes = ['just now', '10s', '30s', '1m'];
-      const postData = {
-        ...post,
+      var timeSuffixes = ['just now', '10s', '30s', '1m'];
+      var postData = Object.assign({}, post, {
         time: timeSuffixes[i % timeSuffixes.length],
         replies: Math.floor(Math.random() * 15),
         retweets: Math.floor(Math.random() * 60),
         likes: Math.floor(Math.random() * 300) + 10,
-      };
-
+      });
       tempDiv.innerHTML = createTweetHTML(postData, true);
-      const el = tempDiv.firstElementChild;
-      fragment.appendChild(el);
+      fragment.appendChild(tempDiv.firstElementChild);
     }
-
-    // Prepend
     if (feedList.firstChild) {
       feedList.insertBefore(fragment, feedList.firstChild);
     } else {
       feedList.appendChild(fragment);
     }
-
-    // Stagger animation
-    const newTweets = feedList.querySelectorAll('.tweet.new-post:not(.animated)');
-    newTweets.forEach((el, idx) => {
+    var newTweets = feedList.querySelectorAll('.tweet.new-post:not(.animated)');
+    newTweets.forEach(function(el, idx) {
       el.style.animationDelay = (idx * 0.1) + 's';
       el.classList.add('animated');
     });
   }
 
-  // ── Event Handlers ──
-
   function getY(e) {
-    if (e.touches) return e.touches[0].clientY;
-    return e.clientY;
+    return e.touches ? e.touches[0].clientY : e.clientY;
   }
 
   function onPointerDown(e) {
     if (isRefreshing) return;
     if (feedContainer.scrollTop > 0) return;
-
     startY = getY(e);
     isPulling = true;
     currentPull = 0;
     thresholdCrossed = false;
-
     feedContainer.classList.remove('snapping', 'refreshing');
     ptrIndicator.classList.remove('snapping', 'refreshing');
   }
 
   function onPointerMove(e) {
     if (!isPulling || isRefreshing) return;
-
-    const deltaY = getY(e) - startY;
-
-    if (deltaY <= 0) {
-      setPull(0);
-      return;
-    }
-
-    // If we're pulling down and feed is at top, prevent default scroll
-    if (feedContainer.scrollTop <= 0 && deltaY > 0) {
-      e.preventDefault();
-    }
-
+    var deltaY = getY(e) - startY;
+    if (deltaY <= 0) { setPull(0); return; }
+    if (feedContainer.scrollTop <= 0 && deltaY > 0) e.preventDefault();
     setPull(deltaY);
   }
 
-  function onPointerUp(e) {
+  function onPointerUp() {
     if (!isPulling || isRefreshing) return;
-
-    const crossed = currentPull >= THRESHOLD;
-    resetPull(crossed);
+    resetPull(currentPull >= THRESHOLD);
   }
 
-  // Mouse events
   feedContainer.addEventListener('mousedown', onPointerDown);
   document.addEventListener('mousemove', onPointerMove);
   document.addEventListener('mouseup', onPointerUp);
-
-  // Touch events
   feedContainer.addEventListener('touchstart', onPointerDown, { passive: true });
   feedContainer.addEventListener('touchmove', onPointerMove, { passive: false });
   feedContainer.addEventListener('touchend', onPointerUp);
+  document.querySelector('.iphone-frame').addEventListener('dragstart', function(e) { e.preventDefault(); });
 
-  // Prevent drag on the phone frame to avoid image-drag issues
-  document.querySelector('.iphone-frame').addEventListener('dragstart', e => e.preventDefault());
-
-  // ── Initialize ──
   renderInitialFeed();
+
+
+  /* ══════════════════════════════════════════════════
+     ACTIVITY 2 — MindFlow Prototype
+     ══════════════════════════════════════════════════ */
+
+  // ── Tab Navigation ──
+  var mfTabs = {
+    home: document.getElementById('mfTabHome'),
+    meditate: document.getElementById('mfTabMeditate'),
+    journal: document.getElementById('mfTabJournal'),
+    profile: document.getElementById('mfTabProfile'),
+  };
+  var mfTabBtns = document.querySelectorAll('.mf-tab-btn');
+  var currentMfTab = 'home';
+
+  function switchMfTab(tabName) {
+    if (tabName === currentMfTab) return;
+    // Close timer if leaving meditate
+    if (currentMfTab === 'meditate') closeMeditationTimer();
+
+    mfTabBtns.forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+    });
+    Object.keys(mfTabs).forEach(function(key) {
+      mfTabs[key].classList.toggle('active', key === tabName);
+    });
+    currentMfTab = tabName;
+
+    // Trigger animations on entry
+    if (tabName === 'home') animateWellnessRing();
+    if (tabName === 'profile') animateChart();
+  }
+
+  mfTabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      switchMfTab(btn.getAttribute('data-tab'));
+    });
+  });
+
+  // ── Greeting time-of-day ──
+  (function setGreeting() {
+    var h = new Date().getHours();
+    var greeting = h < 12 ? 'Good morning,' : h < 17 ? 'Good afternoon,' : 'Good evening,';
+    document.getElementById('mfGreetingText').textContent = greeting;
+  })();
+
+  // ── Wellness Ring Animation ──
+  function animateWellnessRing() {
+    var ring = document.getElementById('mfRingFg');
+    var text = document.getElementById('mfScoreText');
+    var targetScore = 82;
+    var circumference = 2 * Math.PI * 32; // r=32
+    ring.style.strokeDasharray = circumference;
+    ring.style.strokeDashoffset = circumference;
+
+    requestAnimationFrame(function() {
+      var offset = circumference - (targetScore / 100) * circumference;
+      ring.style.strokeDashoffset = offset;
+    });
+
+    // Animate number
+    var start = 0;
+    var duration = 1500;
+    var startTime = null;
+    function animNum(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(eased * targetScore);
+      text.textContent = current;
+      if (progress < 1) requestAnimationFrame(animNum);
+    }
+    requestAnimationFrame(animNum);
+  }
+
+  // ── Plan Cards expand/collapse ──
+  document.querySelectorAll('.mf-plan-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      if (e.target.classList.contains('exp-close')) {
+        card.classList.remove('expanded');
+        return;
+      }
+      var isExpanded = card.classList.contains('expanded');
+      // Close all first
+      document.querySelectorAll('.mf-plan-card').forEach(function(c) { c.classList.remove('expanded'); });
+      if (!isExpanded) card.classList.add('expanded');
+    });
+  });
+
+  // ── Meditation Timer ──
+  var timerInterval = null;
+  var timerSeconds = 300; // 5 minutes
+  var timerRunning = false;
+  var timerPaused = false;
+
+  function openMeditationTimer() {
+    var overlay = document.getElementById('mfTimerOverlay');
+    overlay.classList.add('active');
+    timerSeconds = 300;
+    timerPaused = false;
+    updateTimerDisplay();
+    startTimer();
+    document.getElementById('mfBreathCircle').classList.add('animate');
+    document.getElementById('mfSoundVis').classList.add('playing');
+    document.getElementById('mfTimerPause').innerHTML = '&#10074;&#10074;';
+    startBreathLabels();
+  }
+
+  function closeMeditationTimer() {
+    var overlay = document.getElementById('mfTimerOverlay');
+    overlay.classList.remove('active');
+    stopTimer();
+    document.getElementById('mfBreathCircle').classList.remove('animate');
+    document.getElementById('mfSoundVis').classList.remove('playing');
+    stopBreathLabels();
+  }
+
+  function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerRunning = true;
+    timerInterval = setInterval(function() {
+      if (!timerPaused) {
+        timerSeconds--;
+        updateTimerDisplay();
+        if (timerSeconds <= 0) {
+          closeMeditationTimer();
+        }
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    timerRunning = false;
+    timerPaused = false;
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  }
+
+  function updateTimerDisplay() {
+    var m = Math.floor(timerSeconds / 60);
+    var s = timerSeconds % 60;
+    document.getElementById('mfTimerText').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  var breathLabelInterval = null;
+  function startBreathLabels() {
+    var label = document.getElementById('mfBreathLabel');
+    var phases = ['Breathe in...', 'Hold...', 'Breathe out...', 'Hold...'];
+    var idx = 0;
+    label.textContent = phases[0];
+    if (breathLabelInterval) clearInterval(breathLabelInterval);
+    breathLabelInterval = setInterval(function() {
+      if (!timerPaused) {
+        idx = (idx + 1) % phases.length;
+        label.style.opacity = '0';
+        setTimeout(function() {
+          label.textContent = phases[idx];
+          label.style.opacity = '1';
+        }, 300);
+      }
+    }, 4000);
+  }
+
+  function stopBreathLabels() {
+    if (breathLabelInterval) { clearInterval(breathLabelInterval); breathLabelInterval = null; }
+  }
+
+  document.getElementById('mfPlayBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    openMeditationTimer();
+  });
+
+  document.getElementById('mfTimerPause').addEventListener('click', function() {
+    timerPaused = !timerPaused;
+    var btn = document.getElementById('mfTimerPause');
+    var circle = document.getElementById('mfBreathCircle');
+    var vis = document.getElementById('mfSoundVis');
+    if (timerPaused) {
+      btn.innerHTML = '&#9654;';
+      circle.classList.remove('animate');
+      vis.classList.remove('playing');
+    } else {
+      btn.innerHTML = '&#10074;&#10074;';
+      circle.classList.add('animate');
+      vis.classList.add('playing');
+    }
+  });
+
+  document.getElementById('mfTimerStop').addEventListener('click', function() {
+    closeMeditationTimer();
+  });
+
+  // Also allow other play buttons to open the timer
+  document.querySelectorAll('.mf-featured .feat-play').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openMeditationTimer();
+    });
+  });
+
+  // ── Mood Selection ──
+  var moodBtns = document.querySelectorAll('.mf-mood-btn');
+  moodBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      moodBtns.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      var confirm = document.getElementById('mfMoodConfirm');
+      var mood = btn.getAttribute('data-mood');
+      var messages = {
+        great: 'Wonderful! Mood recorded.',
+        good: 'Nice! Mood recorded.',
+        okay: 'Got it. Mood recorded.',
+        low: 'Hang in there. Mood recorded.',
+        bad: 'Sending good vibes. Mood recorded.'
+      };
+      confirm.textContent = messages[mood] || 'Mood recorded!';
+      confirm.classList.remove('show');
+      // Force reflow
+      void confirm.offsetWidth;
+      confirm.classList.add('show');
+    });
+  });
+
+  // ── Add Note ──
+  document.getElementById('mfAddNoteBtn').addEventListener('click', function() {
+    var input = document.getElementById('mfNoteInput');
+    var text = input.value.trim();
+    if (!text) return;
+
+    var entries = document.getElementById('mfJournalEntries');
+    var moodEmojis = { great: '&#128525;', good: '&#128522;', okay: '&#128528;', low: '&#128532;', bad: '&#128543;' };
+    var selectedMood = document.querySelector('.mf-mood-btn.selected');
+    var emoji = selectedMood ? moodEmojis[selectedMood.getAttribute('data-mood')] : '&#128522;';
+
+    var now = new Date();
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var dateStr = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+
+    var entry = document.createElement('div');
+    entry.className = 'mf-journal-entry';
+    entry.style.opacity = '0';
+    entry.style.transform = 'translateY(-10px)';
+    entry.innerHTML = '<div class="je-header"><div class="je-mood">' + emoji + '</div><div class="je-date">' + dateStr + '</div></div><div class="je-text">' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
+
+    entries.insertBefore(entry, entries.firstChild);
+    requestAnimationFrame(function() {
+      entry.style.transition = 'opacity 0.3s, transform 0.3s';
+      entry.style.opacity = '1';
+      entry.style.transform = 'translateY(0)';
+    });
+
+    input.value = '';
+  });
+
+  // ── Profile Chart Animation ──
+  function animateChart() {
+    var bars = document.querySelectorAll('.mf-chart-bar');
+    bars.forEach(function(bar, i) {
+      bar.style.height = '0px';
+      setTimeout(function() {
+        bar.style.height = bar.getAttribute('data-h') + 'px';
+      }, 100 + i * 80);
+    });
+  }
+
+  // ── Initialize Activity 2 ──
+  // Animate ring on page load (with a small delay so the page settles)
+  setTimeout(function() {
+    animateWellnessRing();
+  }, 600);
 
 })();
 </script>
