@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Activity 1: Micro-interactions — Pull to Refresh</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header .badge {
+    display: inline-block;
+    background: #e8e0f5;
+    color: #6e3eba;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 18px;
+    color: #6e6e73;
+    font-weight: 400;
+  }
+
+  /* Framework bar */
+  .framework-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 32px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .fw-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .fw-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+  }
+  .fw-icon.trigger { background: #34c759; }
+  .fw-icon.rules { background: #ff9f0a; }
+  .fw-icon.feedback { background: #ff3b30; }
+  .fw-icon.loops { background: #007aff; }
+  .fw-label { font-size: 12px; font-weight: 600; color: #6e6e73; text-transform: uppercase; letter-spacing: 0.3px; }
+  .fw-plus { font-size: 22px; color: #c7c7cc; font-weight: 300; }
+  .fw-equals { font-size: 22px; color: #c7c7cc; font-weight: 300; }
+  .fw-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .fw-result .fw-icon { background: linear-gradient(135deg, #6e3eba, #af52de); }
+
+  /* Interaction showcase */
+  .showcase {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .showcase h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .showcase .desc {
+    font-size: 15px;
+    color: #6e6e73;
+    margin-bottom: 32px;
+  }
+
+  .phone-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .phone-frame {
+    position: relative;
+    width: 200px;
+    flex-shrink: 0;
+  }
+  .phone-frame .step-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6e6e73;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .phone-frame .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #6e3eba;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .phone-svg {
+    width: 100%;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  }
+
+  /* Elements grid */
+  .elements-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 640px) {
+    .elements-grid { grid-template-columns: 1fr; }
+  }
+
+  .element-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 4px solid;
+    transition: transform 0.2s;
+  }
+  .element-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .element-card.trigger { border-color: #34c759; }
+  .element-card.rules { border-color: #ff9f0a; }
+  .element-card.feedback { border-color: #ff3b30; }
+  .element-card.loops { border-color: #007aff; }
+
+  .element-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .element-card .card-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .element-card.trigger .card-num { background: #34c759; }
+  .element-card.rules .card-num { background: #ff9f0a; }
+  .element-card.feedback .card-num { background: #ff3b30; }
+  .element-card.loops .card-num { background: #007aff; }
+
+  .element-card .card-title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .element-card .card-body {
+    font-size: 14px;
+    color: #3a3a3c;
+    line-height: 1.7;
+  }
+  .element-card .card-body strong {
+    color: #1d1d1f;
+  }
+
+  /* Summary */
+  .summary-card {
+    background: linear-gradient(135deg, #6e3eba 0%, #af52de 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 36px 40px;
+    box-shadow: 0 4px 20px rgba(110,62,186,0.3);
+  }
+  .summary-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .summary-card p {
+    font-size: 15px;
+    line-height: 1.7;
+    opacity: 0.92;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 13px;
+    color: #aeaeb2;
+  }
+
+  /* Arrow between phones */
+  .arrow-sep {
+    display: flex;
+    align-items: center;
+    padding-top: 30px;
+  }
+  .arrow-sep svg { width: 32px; height: 32px; color: #c7c7cc; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">Mobile Design</div>
+    <h1>Design Activity 1: Micro-interactions</h1>
+    <div class="subtitle">Identifying &amp; Describing the Four Elements of a Microinteraction</div>
+  </div>
+
+  <!-- Framework bar -->
+  <div class="framework-bar">
+    <div class="fw-item"><div class="fw-icon trigger">T</div><div class="fw-label">Trigger</div></div>
+    <div class="fw-plus">+</div>
+    <div class="fw-item"><div class="fw-icon rules">R</div><div class="fw-label">Rules</div></div>
+    <div class="fw-plus">+</div>
+    <div class="fw-item"><div class="fw-icon feedback">F</div><div class="fw-label">Feedback</div></div>
+    <div class="fw-plus">+</div>
+    <div class="fw-item"><div class="fw-icon loops">L</div><div class="fw-label">Loops</div></div>
+    <div class="fw-equals">=</div>
+    <div class="fw-result"><div class="fw-icon">&#10024;</div><div class="fw-label">Micro-interaction</div></div>
+  </div>
+
+  <!-- Chosen Interaction -->
+  <div class="showcase">
+    <h2>Chosen Microinteraction: Pull to Refresh</h2>
+    <p class="desc">Found on nearly every mobile app with a scrollable feed (e.g., Twitter/X, Instagram, Mail, Safari). The user drags the content downward to trigger a content reload.</p>
+
+    <div class="phone-row">
+
+      <!-- Step 1: Idle -->
+      <div class="phone-frame">
+        <div class="step-label"><span class="step-num">1</span> Idle State</div>
+        <svg class="phone-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="192" height="372" rx="28" fill="#f9f9f9" stroke="#d1d1d6" stroke-width="2"/>
+          <rect x="70" y="14" width="60" height="6" rx="3" fill="#d1d1d6"/>
+          <rect x="16" y="40" width="168" height="320" rx="4" fill="#fff"/>
+          <!-- Feed items -->
+          <rect x="24" y="52" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="60" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="62" width="80" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="76" width="100" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="114" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="122" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="124" width="90" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="138" width="70" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="176" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="184" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="186" width="72" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="200" width="95" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="238" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="246" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="248" width="85" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="262" width="60" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="300" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="308" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="310" width="78" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="324" width="88" height="6" rx="3" fill="#e5e5ea"/>
+        </svg>
+      </div>
+
+      <div class="arrow-sep">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M8 16h16m0 0l-6-6m6 6l-6 6" stroke="#c7c7cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- Step 2: Pulling -->
+      <div class="phone-frame">
+        <div class="step-label"><span class="step-num">2</span> Pulling Down</div>
+        <svg class="phone-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="192" height="372" rx="28" fill="#f9f9f9" stroke="#d1d1d6" stroke-width="2"/>
+          <rect x="70" y="14" width="60" height="6" rx="3" fill="#d1d1d6"/>
+          <rect x="16" y="40" width="168" height="320" rx="4" fill="#fff"/>
+          <!-- Spinner area -->
+          <g transform="translate(100,72)">
+            <circle cx="0" cy="0" r="14" fill="none" stroke="#e5e5ea" stroke-width="2.5"/>
+            <path d="M0-14 A14 14 0 0 1 14 0" fill="none" stroke="#6e3eba" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <!-- Finger indicator -->
+          <g transform="translate(100,105)">
+            <path d="M0-8 L0 8" stroke="#6e3eba" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <path d="M-4 4 L0 10 L4 4" fill="#6e3eba" opacity="0.6"/>
+          </g>
+          <!-- Feed items pushed down -->
+          <rect x="24" y="118" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="126" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="128" width="80" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="142" width="100" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="180" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="188" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="190" width="90" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="204" width="70" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="242" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="250" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="252" width="72" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="266" width="95" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="304" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="312" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="314" width="85" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="328" width="60" height="6" rx="3" fill="#e5e5ea"/>
+          <!-- Drag hand -->
+          <text x="100" y="54" text-anchor="middle" font-size="9" fill="#6e3eba" font-weight="600" font-family="Inter, sans-serif">&#8595; PULLING</text>
+        </svg>
+      </div>
+
+      <div class="arrow-sep">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M8 16h16m0 0l-6-6m6 6l-6 6" stroke="#c7c7cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- Step 3: Loading / Refreshed -->
+      <div class="phone-frame">
+        <div class="step-label"><span class="step-num">3</span> Refreshed</div>
+        <svg class="phone-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="192" height="372" rx="28" fill="#f9f9f9" stroke="#d1d1d6" stroke-width="2"/>
+          <rect x="70" y="14" width="60" height="6" rx="3" fill="#d1d1d6"/>
+          <rect x="16" y="40" width="168" height="320" rx="4" fill="#fff"/>
+          <!-- NEW item highlighted -->
+          <rect x="24" y="52" width="152" height="52" rx="8" fill="#eef6ff" stroke="#007aff" stroke-width="1"/>
+          <rect x="32" y="60" width="28" height="28" rx="14" fill="#007aff" opacity="0.2"/>
+          <circle cx="46" cy="74" r="3" fill="#007aff"/>
+          <rect x="68" y="62" width="80" height="8" rx="4" fill="#007aff" opacity="0.5"/>
+          <rect x="68" y="76" width="100" height="6" rx="3" fill="#b3d7ff"/>
+          <text x="158" y="59" font-size="7" fill="#007aff" font-weight="700" font-family="Inter, sans-serif">NEW</text>
+          <!-- Existing items -->
+          <rect x="24" y="114" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="122" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="124" width="80" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="138" width="100" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="176" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="184" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="186" width="90" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="200" width="70" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="238" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="246" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="248" width="72" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="262" width="95" height="6" rx="3" fill="#e5e5ea"/>
+          <rect x="24" y="300" width="152" height="52" rx="8" fill="#f2f2f7"/>
+          <rect x="32" y="308" width="28" height="28" rx="14" fill="#d1d1d6"/>
+          <rect x="68" y="310" width="85" height="8" rx="4" fill="#c7c7cc"/>
+          <rect x="68" y="324" width="60" height="6" rx="3" fill="#e5e5ea"/>
+          <!-- Checkmark -->
+          <g transform="translate(100, 49)">
+            <text text-anchor="middle" font-size="8" fill="#34c759" font-weight="600" font-family="Inter, sans-serif">&#10003; Updated</text>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Four Elements -->
+  <div class="elements-grid">
+
+    <div class="element-card trigger">
+      <div class="card-header">
+        <div class="card-num">1</div>
+        <div class="card-title">Trigger</div>
+      </div>
+      <div class="card-body">
+        <strong>User-initiated trigger:</strong> The user places their finger on the content list and drags it downward past a threshold distance (typically ~60–80 px). This is a manual, gesture-based trigger — there is no button involved.<br><br>
+        <strong>System trigger:</strong> Some apps also auto-refresh when the view appears (e.g., switching tabs), but the canonical pull-to-refresh is a direct-manipulation gesture that puts the user in control.
+      </div>
+    </div>
+
+    <div class="element-card rules">
+      <div class="card-header">
+        <div class="card-num">2</div>
+        <div class="card-title">Rules</div>
+      </div>
+      <div class="card-body">
+        <strong>What happens once triggered:</strong><br>
+        &bull; The user must pull past a minimum threshold before the refresh activates; partial pulls snap back without refreshing.<br>
+        &bull; Once the threshold is crossed, the app sends a network request for the latest content.<br>
+        &bull; The spinner stays visible until the response is received or a timeout occurs.<br>
+        &bull; On success, new items are inserted at the top of the list. On failure, an error banner appears.
+      </div>
+    </div>
+
+    <div class="element-card feedback">
+      <div class="card-header">
+        <div class="card-num">3</div>
+        <div class="card-title">Feedback</div>
+      </div>
+      <div class="card-body">
+        <strong>Visual:</strong> A circular spinner/progress indicator appears in the gap created by the pull. It rotates while loading, then either morphs into a checkmark or disappears when content loads.<br><br>
+        <strong>Haptic:</strong> On iOS, a subtle haptic tap fires the moment the pull crosses the activation threshold, confirming the gesture registered.<br><br>
+        <strong>Content shift:</strong> New items animate in from the top, pushing existing content down smoothly.
+      </div>
+    </div>
+
+    <div class="element-card loops">
+      <div class="card-header">
+        <div class="card-num">4</div>
+        <div class="card-title">Loops &amp; Modes</div>
+      </div>
+      <div class="card-body">
+        <strong>Loop:</strong> The interaction is infinitely repeatable — the user can pull to refresh as many times as they wish. There is no "cooldown," though rapid successive pulls typically return the same content if nothing has changed on the server.<br><br>
+        <strong>Mode change:</strong> If the device is offline, the interaction switches modes: the spinner may stop early and an "No connection" banner replaces new content. The same gesture now leads to a different feedback path.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-card">
+    <h3>Why Pull-to-Refresh Is a Great Microinteraction</h3>
+    <p>
+      Pull-to-refresh, originally designed by Loren Brichter for Tweetie (2008), is one of the most successful microinteractions in mobile design history. It works because the trigger is intuitive (the gesture mirrors physically pulling a list), the feedback is immediate and multi-sensory (visual spinner + haptic tap), the rules are simple and forgiving (partial pulls cancel gracefully), and the loop is natural — users can repeat the action whenever they want with zero friction. It gives users a sense of direct control over content freshness, turning a mundane data-fetch into a satisfying moment of interaction.
+    </p>
+  </div>
+
+  <div class="footer">
+    Design Activity 1 &middot; Micro-interactions &middot; Mobile Design
+  </div>
+
+</div>
+</body>
+</html>
